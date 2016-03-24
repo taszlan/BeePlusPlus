@@ -7,7 +7,7 @@ public class TestModel {
     private String welcomeString;
 
     public TestModel(){
-        welcomeString = "Test commita bezposredniego123456789, zakodowany na stałe w TestModel";
+        welcomeString = "Test commita bezposredniego123456789, zakodowany na stałe w TestModel, test dla MAlina";
     }
 
     public String getWelcomeString() {

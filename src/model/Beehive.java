@@ -1,5 +1,8 @@
 package model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by atticus on 3/18/16.
  *
@@ -11,7 +14,9 @@ package model;
  *            Dodanie ula będzie się odbywało w 2 etapach: utworzenie nowego ula w magazynie i przeniesienie
  *            ula z magazynu do konkretenj pasieki.
  */
+@DatabaseTable(tableName = "beehives")
 public class Beehive {
+    @DatabaseField(id=true)
     private int id;
     private int apiaryNumber;
     private double weight;

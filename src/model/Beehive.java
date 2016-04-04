@@ -15,14 +15,16 @@ public class Beehive {
     private int id;
     private int apiaryNumber;
     private double weight;
-    private BeehiveCoordinates beehiveCoordinates;
+    private int xCoordinate;
+    private int yCoordinate;
     private boolean isInStorage;
 
     public Beehive(int id, int apiaryNumber, double weight, int xCoordinate, int yCoordinate){
         this.id = id;
         this.apiaryNumber = apiaryNumber;
         this.weight = weight;
-        this.beehiveCoordinates = new BeehiveCoordinates(xCoordinate, yCoordinate);
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
         this.isInStorage = true;
     }
 
@@ -50,12 +52,17 @@ public class Beehive {
         this.weight = weight;
     }
 
-    public BeehiveCoordinates getBeehiveCoordinates() {
-        return beehiveCoordinates;
+    public int getBeehiveXCoordinate(){
+        return xCoordinate;
     }
 
-    public void setBeehiveCoordinates(BeehiveCoordinates beehiveCoordinates) {
-        this.beehiveCoordinates = beehiveCoordinates;
+    public int getBeehiveYCoordinate(){
+        return yCoordinate;
+    }
+
+    public void setBeehiveCoordinates(int xCoordinate, int yCoordinate) {
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
     }
 
     public boolean isInStorage() {

@@ -6,20 +6,31 @@ import java.util.Random;
 
 /**
  * Created by atticus on 3/18/16.
- * 
+ *
  */
 public class Apiary {
+    private static final int MAX_APIARY_X_SIZE = 100;
+    private static final int MAX_APIARY_Y_SIZE = 100;
+
     private int apiaryID;
     private List<Beehive> listOfBeehives;
+    private String apiaryName;
+    private int xSize;
+    private int ySize;
 
     //Generuje mockowe pasieki dla id = 0 i id = 1;
     public Apiary(int apiaryID){
         this.apiaryID = apiaryID;
         if(apiaryID == 0) {
             listOfBeehives = mockListOfBeehives1();
+            apiaryName = "Pierwsza Pasieka";
         } else {
             listOfBeehives = mockListOfBeehives2();
+            apiaryName = "Druga Pasieka";
         }
+
+        xSize = MAX_APIARY_X_SIZE;
+        ySize = MAX_APIARY_Y_SIZE;
     }
 
     private List<Beehive> mockListOfBeehives1(){
@@ -77,5 +88,15 @@ public class Apiary {
 
         return beehiveArrayList;
     }
+
+
+    public String getApiaryName() {
+        return apiaryName;
+    }
+
+    public void setApiaryName(String apiaryName) {
+        this.apiaryName = apiaryName;
+    }
+
 
 }

@@ -6,10 +6,14 @@ import presenter.SimpleGUIPresenter;
  * Created by malinuss on 24.03.16.
  */
 public class SimpleGIUMain {
-	
+
+
+
 	private SimpleGUIPresenter simpleGUIPresenter;
-	
-	  
+
+	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
+		this.simpleGUIPresenter = simpleGUIPresenter;
+	}
 	
 	public SimpleGUIPresenter getSimpleGuiPresenter() {
 	        return simpleGUIPresenter;

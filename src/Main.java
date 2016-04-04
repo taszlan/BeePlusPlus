@@ -1,5 +1,7 @@
 import model.TestModel;
+import presenter.SimpleGUIPresenter;
 import presenter.TestPresenter;
+import view.SimpleGIUMain;
 import view.TestView;
 
 import java.awt.*;
@@ -17,9 +19,12 @@ public class Main {
 
             @Override
             public void run() {
-                TestView testView = new TestView();
-                testView.setTestPresenter(new TestPresenter(new TestModel(), testView));
-                testView.setVisible(true);
+//                TestView testView = new TestView();
+//                testView.setTestPresenter(new TestPresenter(new TestModel(), testView));
+//                testView.setVisible(true);
+
+                SimpleGIUMain simpleGUIMain = new SimpleGIUMain();
+                simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
             }
         });
     }

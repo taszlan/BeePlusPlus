@@ -25,6 +25,7 @@ public class Main {
 
                 SimpleGIUMain simpleGUIMain = new SimpleGIUMain();
                 simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
+                simpleGUIMain.showMenu();
             }
         });
     }

@@ -98,5 +98,11 @@ public class Apiary {
         this.apiaryName = apiaryName;
     }
 
+    public List<Beehive> getListOfBehives() {
+        return listOfBeehives;
+    }
+
+   
+    
 
 }

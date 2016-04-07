@@ -22,7 +22,7 @@ public class Main {
 
                 SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
                 simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
-                simpleGUIMain.showMenu();
+                simpleGUIMain.display();
             }
         });
     }

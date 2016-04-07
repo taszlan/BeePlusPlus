@@ -1,8 +1,5 @@
-import model.TestModel;
 import presenter.SimpleGUIPresenter;
-import presenter.TestPresenter;
-import view.SimpleGIUMain;
-import view.TestView;
+import view.SimpleGIUMainView;
 
 import java.awt.*;
 
@@ -23,7 +20,7 @@ public class Main {
 //                testView.setTestPresenter(new TestPresenter(new TestModel(), testView));
 //                testView.setVisible(true);
 
-                SimpleGIUMain simpleGUIMain = new SimpleGIUMain();
+                SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
                 simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
                 simpleGUIMain.showMenu();
             }

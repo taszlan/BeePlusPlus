@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by malinuss on 24.03.16.
  */
-public class SimpleGIUMain {
+public class SimpleGIUMainView {
 
 
 	private List<Apiary> listOfApiaries;

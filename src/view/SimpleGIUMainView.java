@@ -34,7 +34,7 @@ public class SimpleGIUMainView {
 		 
 		 for(Apiary a : listOfApiaries){
 			 System.out.println(a.getApiaryName());
-			 
+
 			
 			 for( Beehive b : a.getListOfBehives()){
 				 System.out.println(b.getId()); 

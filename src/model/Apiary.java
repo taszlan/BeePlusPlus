@@ -1,5 +1,7 @@
 package model;
 
+import com.j256.ormlite.field.DatabaseField;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,10 +14,15 @@ public class Apiary {
     private static final int MAX_APIARY_X_SIZE = 100;
     private static final int MAX_APIARY_Y_SIZE = 100;
 
+    @DatabaseField
     private int apiaryID;
+    @DatabaseField
     private List<Beehive> listOfBeehives;
+    @DatabaseField
     private String apiaryName;
+    @DatabaseField
     private int xSize;
+    @DatabaseField
     private int ySize;
 
     //Generuje mockowe pasieki dla id = 0 i id = 1;

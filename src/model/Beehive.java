@@ -16,16 +16,21 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "beehives")
 public class Beehive {
-    @DatabaseField(id=true)
-    private int id;
+    @DatabaseField(generatedId = true)
+    private int database_id;
+    @DatabaseField
     private int apiaryNumber;
+    @DatabaseField
     private double weight;
+    @DatabaseField
     private int xCoordinate;
+    @DatabaseField
     private int yCoordinate;
+    @DatabaseField
     private boolean isInStorage;
 
     public Beehive(int id, int apiaryNumber, double weight, int xCoordinate, int yCoordinate){
-        this.id = id;
+        this.database_id = id;
         this.apiaryNumber = apiaryNumber;
         this.weight = weight;
         this.xCoordinate = xCoordinate;
@@ -33,12 +38,12 @@ public class Beehive {
         this.isInStorage = true;
     }
 
-    public int getId() {
-        return id;
+    public int getDatabaseId() {
+        return database_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.database_id = id;
     }
 
     public int getApiaryNumber() {

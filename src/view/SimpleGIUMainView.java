@@ -69,13 +69,20 @@ public class SimpleGIUMainView {
 		private void openMagazynMenu(){
 			System.out.println("will get Magazyn menu here");
 		}
+		
 //	 public void showMenu(){
 //		 listOfApiaries = simpleGUIPresenter.getApiaryList() ;
 		
 		 
+//
 //		 for(Apiary a : listOfApiaries){
 //			 System.out.println(a.getApiaryName());
 			 
+//
+//		 for(Apiary a : listOfApiaries){
+//			 System.out.println(a.getApiaryName());
+
+//
 			
 //			 for( Beehive b : a.getListOfBehives()){
 //				 System.out.println(b.getId()); 

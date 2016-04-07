@@ -9,6 +9,17 @@ import model.Beehive;
 import java.util.ArrayList;
 
 public class ApiaryMenu {
+	
+	private List<Apiary> listOfApiaries;
+	private SimpleGUIPresenter simpleGUIPresenter;
+
+	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
+		this.simpleGUIPresenter = simpleGUIPresenter;
+	}
+	
+	public SimpleGUIPresenter getSimpleGuiPresenter() {
+	        return simpleGUIPresenter;
+	    }
 
 	private Scanner input = new Scanner(System.in);
 	

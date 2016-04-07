@@ -12,13 +12,34 @@ public class ApiariesMenu {
 	
 	private Scanner input = new Scanner(System.in);
 	
+	private List<Apiary> listOfApiaries;
+	private SimpleGUIPresenter simpleGUIPresenter;
+
+	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
+		this.simpleGUIPresenter = simpleGUIPresenter;
+	}
+	
+	public SimpleGUIPresenter getSimpleGuiPresenter() {
+	        return simpleGUIPresenter;
+	    }
+	
+    
+	
+	
+	
 	public void display(){
 		
-		System.out.println(
-				"Select menu: \n" +
-				"1) Pasieki \n" +
-				"2) Exit \n"
-				);
+		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
+
+		for(Apiary a : listOfApiaries){
+			System.out.println(a.getApiaryName());
+		}
+		
+//		System.out.println(
+//				"Select menu: \n" +
+//				"1) Pasieki \n" +
+//				"2) Exit \n"
+//				);
 	int selection = input.nextInt();
 	input.hasNextLine();
 	

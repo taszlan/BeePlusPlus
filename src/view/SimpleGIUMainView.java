@@ -8,6 +8,7 @@ import model.Apiary;
 import model.Beehive;
 
 import java.util.ArrayList;
+import view.ApiariesMenu;
 
 /**
  * Created by malinuss on 24.03.16.
@@ -26,9 +27,9 @@ public class SimpleGIUMainView {
 	        return simpleGUIPresenter;
 	    }
 
-	    public void setSimpleGuiPresenter(SimpleGUIPresenter simpleGuiPresenter) {
-	        this.simpleGUIPresenter = simpleGUIPresenter;
-	    }
+//	    public void setSimpleGuiPresenter(SimpleGUIPresenter simpleGuiPresenter) {
+//	        this.simpleGUIPresenter = simpleGUIPresenter;
+//	    }
 	    
 	    private Scanner input = new Scanner(System.in);
 	    public void display(){
@@ -47,6 +48,7 @@ public class SimpleGIUMainView {
 		
 		case 1:
 			ApiariesMenu apiariesMenu = new ApiariesMenu();
+			apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
 			apiariesMenu.display();
 			break;
 		case 2:

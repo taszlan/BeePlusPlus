@@ -32,33 +32,35 @@ public class ApiariesMenu {
 		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
 
 		for(Apiary a : listOfApiaries){
+			
 			System.out.println(a.getApiaryName());
 		}
 		
-//		System.out.println(
-//				"Select menu: \n" +
-//				"1) Pasieki \n" +
-//				"2) Exit \n"
-//				);
-	int selection = input.nextInt();
-	input.hasNextLine();
+
+		
+		int selection = input.nextInt();
+		
+		input.hasNextLine();
+	
+		
+		for (int i = 0; i < listOfApiaries.size(); i++) {
+		 		Apiary element = listOfApiaries.get(i);
+		
+		  		int j  	;
+		  		j = 1+i;
+	
+				if(selection == j){
+					ApiaryMenu apiaryMenu = new ApiaryMenu();
+					apiaryMenu.display(element.getApiaryName());
+		
+					break;
+					}
+					j++;
 	
 	
-	switch (selection){
+		}	
 	
-	case 1:
-		ApiaryMenu apiaryMenu = new ApiaryMenu();
-		apiaryMenu.display();
-		break;
-	
-	case 2:
-		this.exit();
-		break;
-	default:
-		System.out.println("Niepoprawny wybór");
-		break;
-	
-	}
+
 	}
 	private void exit(){
 		System.out.println("Exiting...");

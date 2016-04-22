@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class ApiaryMenu {
 	
 	private List<Apiary> listOfApiaries;
+	private List<Beehive> listOfBeehives;
 	private SimpleGUIPresenter simpleGUIPresenter;
 
 	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
@@ -23,31 +24,66 @@ public class ApiaryMenu {
 
 	private Scanner input = new Scanner(System.in);
 	
-	public void display(){
+	public void display(String apiaryName){
 		
-		System.out.println(
-				"Select menu: \n" +
-				"1) Ul \n" +
-				"2) Exit \n"
-				);
-	int selection = input.nextInt();
-	input.hasNextLine();
+		
+		System.out.println(apiaryName);
+		
+		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
+		listOfBeehives = simpleGUIPresenter.getBeehiveList() ;
+
+		for(Beehive a : listOfBeehives){
+			
+			System.out.println(a.getBehiveWithID(a));
+		}
+		
+
+		
+//		int selection = input.nextInt();
+		
+//		input.hasNextLine();
 	
+		
+//		for (int i = 0; i < listOfBeehives.size(); i++) {
+//		 		Beehive element = listOfBeehives.get(i);
+		
+//		  		int j  	;
+//		  		j = 1+i;
 	
-	switch (selection){
-	
-	
-	case 1:
-		this.openUlMenu();
-		break;
-	case 2:
-		this.exit();
-		break;
-	default:
-		System.out.println("Niepoprawny wybór");
-		break;
+//				if(selection == j){
+//					BeehiveOptions beehiveOptions = new BeehiveOptions();
+//					beehiveOptions.display(element.getBeeHiveId());
+		
+//					break;
+//					}
+//					j++;
+//		}
 	}
-	}
+		
+		
+	//	System.out.println(
+	//			"Select menu: \n" +
+	//			"1) Ul \n" +
+	//			"2) Exit \n"
+//				);
+	//int selection = input.nextInt();
+//	input.hasNextLine();
+	
+	
+//	switch (selection){
+	
+	
+//	case 1:
+//		this.openUlMenu();
+//		break;
+//	case 2:
+//		this.exit();
+//		break;
+//	default:
+//		System.out.println("Niepoprawny wybór");
+//		break;
+//	}
+	
 	private void openUlMenu(){
 		System.out.println("will get Ul menu here");
 	}

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class SimpleGUIPresenter {
     List<Apiary> apiaryList = new ArrayList<>();
+    List<Beehive> beehiveList = new ArrayList<>();
 
     public SimpleGUIPresenter(){
         createMockApiaryList();
@@ -23,18 +24,26 @@ public class SimpleGUIPresenter {
         apiaryList.add(apiary0);
         apiaryList.add(apiary1);
     }
-
+    
+    
+    
     public List<Apiary> getApiaryList(){
         return apiaryList;
     }
-
+    public List<Beehive> getBeehiveList(int apiaryId){
+    	
+    	
+    	
+    	return beehiveList;
+   }
     //Zwraca pasiekę o konkretnym ID
     public Apiary getApiaryWithID(int id){
         return apiaryList.get(id);
     }
 
     public Beehive getBeehiveWithID(int id){
-        return new Beehive(id, 0, 0, 0, 0);
+  //      return new Beehive(id, 0, 0, 0, 0);
+    	return beehiveList.get(id);
     }
 
     public void createNewBeehive(){

@@ -14,15 +14,6 @@ public class SimpleGUIPresenter {
     List<Beehive> beehiveList = new ArrayList<>();
 
     public SimpleGUIPresenter(){
-        createMockApiaryList();
-    }
-
-    private void createMockApiaryList(){
-        Apiary apiary0 = new Apiary(0);
-        Apiary apiary1 = new Apiary(1);
-
-        apiaryList.add(apiary0);
-        apiaryList.add(apiary1);
     }
     
     

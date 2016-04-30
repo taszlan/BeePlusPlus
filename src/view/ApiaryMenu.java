@@ -30,11 +30,11 @@ public class ApiaryMenu {
 		System.out.println(apiaryName);
 		
 		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
-		listOfBeehives = simpleGUIPresenter.getBeehiveList() ;
+		//listOfBeehives = simpleGUIPresenter.getBeehiveList() ;
 
 		for(Beehive a : listOfBeehives){
 			
-			System.out.println(a.getBehiveWithID(a));
+			//1System.out.println(a.getBehiveWithID(a));
 		}
 		
 
@@ -80,7 +80,7 @@ public class ApiaryMenu {
 //		this.exit();
 //		break;
 //	default:
-//		System.out.println("Niepoprawny wybór");
+//		System.out.println("Niepoprawny wybï¿½r");
 //		break;
 //	}
 	

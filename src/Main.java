@@ -1,3 +1,4 @@
+import model.database.DatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
 
@@ -11,6 +12,7 @@ public class Main {
     public static void main(String args[]){
         System.out.println("Main");
 
+        DatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
         EventQueue.invokeLater(new Runnable() {
 

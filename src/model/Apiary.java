@@ -1,7 +1,9 @@
 package model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,10 +16,8 @@ public class Apiary {
     private static final int MAX_APIARY_X_SIZE = 100;
     private static final int MAX_APIARY_Y_SIZE = 100;
 
-    @DatabaseField
+    @DatabaseField (generatedId = true)
     private int apiaryID;
-    @DatabaseField
-    private List<Beehive> listOfBeehives;
     @DatabaseField
     private String apiaryName;
     @DatabaseField
@@ -25,77 +25,18 @@ public class Apiary {
     @DatabaseField
     private int ySize;
 
-    //Generuje mockowe pasieki dla id = 0 i id = 1;
-    public Apiary(int apiaryID){
-        this.apiaryID = apiaryID;
-        if(apiaryID == 0) {
-            listOfBeehives = mockListOfBeehives1();
-            apiaryName = "Pierwsza Pasieka";
-        } else {
-            listOfBeehives = mockListOfBeehives2();
-            apiaryName = "Druga Pasieka";
-        }
-
-        xSize = MAX_APIARY_X_SIZE;
-        ySize = MAX_APIARY_Y_SIZE;
+    public Apiary(){
     }
 
-    private List<Beehive> mockListOfBeehives1(){
-        List<Beehive> beehiveArrayList= new ArrayList<>();
-        Random generator = new Random();
-
-        beehiveArrayList.add(new Beehive(
-                0,
-                0,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        beehiveArrayList.add(new Beehive(
-                1,
-                0,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        beehiveArrayList.add(new Beehive(
-                2,
-                0,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        return beehiveArrayList;
+    public Apiary(String apiaryName, int xSize, int ySize) {
+        this.apiaryName = apiaryName;
+        this.xSize = xSize;
+        this.ySize = ySize;
     }
 
-    private List<Beehive> mockListOfBeehives2(){
-        List<Beehive> beehiveArrayList= new ArrayList<>();
-        Random generator = new Random();
-
-        beehiveArrayList.add(new Beehive(
-                3,
-                1,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        beehiveArrayList.add(new Beehive(
-                4,
-                1,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        beehiveArrayList.add(new Beehive(
-                5,
-                1,
-                10*generator.nextDouble(),
-                generator.nextInt(10),
-                generator.nextInt(10)));
-
-        return beehiveArrayList;
+    public int getApiaryID() {
+        return apiaryID;
     }
-
 
     public String getApiaryName() {
         return apiaryName;
@@ -105,11 +46,13 @@ public class Apiary {
         this.apiaryName = apiaryName;
     }
 
-    public List<Beehive> getListOfBehives() {
-        return listOfBeehives;
+    @Override
+    public String toString() {
+        return "Apiary{" +
+                "apiaryID=" + apiaryID +
+                ", apiaryName='" + apiaryName + '\'' +
+                ", xSize=" + xSize +
+                ", ySize=" + ySize +
+                '}';
     }
-
-   
-    
-
 }

@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by atticus on 3/18/16.
  *
  * id - numer identyfikacyjny ula - unikatowy, domyślnie automatycznie nadawany przez bazę danych
- * apiaryNumber - numer pasieki, do której przypisany jest dany ul
+ * apiaryId - numer pasieki, do której przypisany jest dany ul
  * weight - waga ula
  * beehiveCoordinates - współrzędne ula w danej pasiece
  * isInStorage - jeżeli true to ul jest w magazynie, czyli nie jest przypisany do konkretnej pasieki,
@@ -19,7 +19,7 @@ public class Beehive {
     @DatabaseField(generatedId = true)
     private int database_id;
     @DatabaseField
-    private int apiaryNumber;
+    private int apiaryId;
     @DatabaseField
     private double weight;
     @DatabaseField
@@ -29,9 +29,12 @@ public class Beehive {
     @DatabaseField
     private boolean isInStorage;
 
-    public Beehive(int id, int apiaryNumber, double weight, int xCoordinate, int yCoordinate){
-        this.database_id = id;
-        this.apiaryNumber = apiaryNumber;
+    public Beehive(){
+
+    }
+
+    public Beehive(int apiaryId, double weight, int xCoordinate, int yCoordinate){
+        this.apiaryId = apiaryId;
         this.weight = weight;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
@@ -46,12 +49,12 @@ public class Beehive {
         this.database_id = id;
     }
 
-    public int getApiaryNumber() {
-        return apiaryNumber;
+    public int getApiaryId() {
+        return apiaryId;
     }
 
-    public void setApiaryNumber(int apiaryNumber) {
-        this.apiaryNumber = apiaryNumber;
+    public void setApiaryId(int apiaryId) {
+        this.apiaryId = apiaryId;
     }
 
     public double getWeight() {
@@ -81,5 +84,17 @@ public class Beehive {
 
     public void setInStorage(boolean inStorage) {
         this.isInStorage = inStorage;
+    }
+
+    @Override
+    public String toString() {
+        return "Beehive{" +
+                "database_id=" + database_id +
+                ", apiaryId=" + apiaryId +
+                ", weight=" + weight +
+                ", xCoordinate=" + xCoordinate +
+                ", yCoordinate=" + yCoordinate +
+                ", isInStorage=" + isInStorage +
+                '}';
     }
 }

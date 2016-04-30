@@ -1,6 +1,7 @@
 import model.Apiary;
 import model.Beehive;
 import model.database.DatabaseHelper;
+import model.database.IDatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
 
@@ -14,7 +15,7 @@ public class Main {
     public static void main(String args[]){
         System.out.println("Main");
 
-        final DatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
+        final IDatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
 
         //Testowanie zapytań do bazy danych
         databaseHelper.createNewApiary(new Apiary("Testowa pasieka", 10, 10));

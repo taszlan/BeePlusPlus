@@ -5,7 +5,6 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import model.Apiary;
 import model.Beehive;
@@ -17,10 +16,10 @@ import java.util.List;
 /**
  * Created by atticus on 07.04.16.
  */
-public class DatabaseHelper {
+public class DatabaseHelper implements IDatabaseHelper {
 
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
-    private static DatabaseHelper databaseHelper;
+    private static IDatabaseHelper IDatabaseHelper;
     private ConnectionSource connectionSource;
     Dao<DatabaseVersion, Integer> databaseVersionDao;
     Dao<Apiary, Integer> apiaryDao;
@@ -42,6 +41,7 @@ public class DatabaseHelper {
         }
     }
 
+    @Override
     public void createNewApiary(Apiary apiary){
         try {
             apiaryDao.create(apiary);
@@ -50,6 +50,7 @@ public class DatabaseHelper {
         }
     }
 
+    @Override
     public List<Beehive> getBeehivesFromApiary(int apiaryId){
         List<Beehive> beehiveList= new ArrayList<>();
         try {
@@ -62,6 +63,7 @@ public class DatabaseHelper {
         return beehiveList;
     }
 
+    @Override
     public List<Apiary> getAllApiaries(){
         List<Apiary> apiaryList = new ArrayList<>();
         try {
@@ -72,6 +74,7 @@ public class DatabaseHelper {
         return apiaryList;
     }
 
+    @Override
     public Apiary getApiaryWithId(int apiaryId){
         Apiary apiary = new Apiary();
         try {
@@ -84,6 +87,7 @@ public class DatabaseHelper {
         return apiary;
     }
 
+    @Override
     public Beehive getBeehiveWithId(int beehiveId){
         Beehive beehive = new Beehive();
         try {
@@ -96,6 +100,7 @@ public class DatabaseHelper {
         return beehive;
     }
 
+    @Override
     public void closeConnection() {
         try {
             connectionSource.close();
@@ -105,12 +110,12 @@ public class DatabaseHelper {
     }
 
 
-    public static DatabaseHelper getDatabaseHelper(){
-        if(databaseHelper == null){
-            databaseHelper = new DatabaseHelper();
+    public static IDatabaseHelper getDatabaseHelper(){
+        if(IDatabaseHelper == null){
+            IDatabaseHelper = new DatabaseHelper();
         }
 
-        return databaseHelper;
+        return IDatabaseHelper;
     }
 
 }

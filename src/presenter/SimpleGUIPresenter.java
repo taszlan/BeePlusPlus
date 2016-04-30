@@ -2,6 +2,7 @@ package presenter;
 
 import model.Apiary;
 import model.Beehive;
+import model.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,39 +11,37 @@ import java.util.List;
  * Created by atticus on 24.03.16.
  */
 public class SimpleGUIPresenter {
-    List<Apiary> apiaryList = new ArrayList<>();
-    List<Beehive> beehiveList = new ArrayList<>();
+    DatabaseHelper databaseHelper;
 
     public SimpleGUIPresenter(){
+        databaseHelper = DatabaseHelper.getDatabaseHelper();
     }
-    
-    
     
     public List<Apiary> getApiaryList(){
-        return apiaryList;
+        return databaseHelper.getAllApiaries();
     }
-    public List<Beehive> getBeehiveList(int apiaryId){
-    	
-    	
-    	
-    	return beehiveList;
-   }
+
+    public List<Beehive> getBeehivesFromApiary(int apiaryId){
+    	return databaseHelper.getBeehivesFromApiary(apiaryId);
+    }
+
     //Zwraca pasiekę o konkretnym ID
     public Apiary getApiaryWithID(int id){
-        return apiaryList.get(id);
+        return databaseHelper.getApiaryWithId(id);
     }
 
     public Beehive getBeehiveWithID(int id){
-  //      return new Beehive(id, 0, 0, 0, 0);
-    	return beehiveList.get(id);
+    	return databaseHelper.getBeehiveWithId(id);
     }
 
     public void createNewBeehive(){
+        Beehive beehive = new Beehive();
 
     }
 
-    public void createNewApiary(int xSize, int ySize){
-
+    public void createNewApiary(String name, int xSize, int ySize){
+        Apiary apiary = new Apiary(name, xSize, ySize);
+        databaseHelper.createNewApiary(apiary);
     }
 
     public void updateApiary(int apiaryID){

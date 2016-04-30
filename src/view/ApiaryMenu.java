@@ -30,7 +30,7 @@ public class ApiaryMenu {
 		System.out.println(apiaryName);
 		
 		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
-		//listOfBeehives = simpleGUIPresenter.getBeehiveList() ;
+		//listOfBeehives = simpleGUIPresenter.getBeehivesFromApiary() ;
 
 		for(Beehive a : listOfBeehives){
 			

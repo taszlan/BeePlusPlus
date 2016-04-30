@@ -1,3 +1,5 @@
+import model.Apiary;
+import model.Beehive;
 import model.database.DatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
@@ -12,7 +14,19 @@ public class Main {
     public static void main(String args[]){
         System.out.println("Main");
 
-        DatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
+        final DatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
+
+        //Testowanie zapytań do bazy danych
+        databaseHelper.createNewApiary(new Apiary("Testowa pasieka", 10, 10));
+
+        for(Apiary a : databaseHelper.getAllApiaries()){
+            System.out.println(a);
+        }
+
+        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0).getApiaryID())){
+            System.out.println(beehive);
+        }
+
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
         EventQueue.invokeLater(new Runnable() {
 
@@ -25,6 +39,14 @@ public class Main {
                 SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
                 simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
                 simpleGUIMain.display();
+            }
+        });
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                System.out.println("BeePlusPlus shutting down");
+                databaseHelper.closeConnection();
             }
         });
     }

@@ -15,8 +15,9 @@ import java.util.Random;
 public class Apiary {
     private static final int MAX_APIARY_X_SIZE = 100;
     private static final int MAX_APIARY_Y_SIZE = 100;
+    public static final String APIARY_ID = "APIARY+ID";
 
-    @DatabaseField (generatedId = true)
+    @DatabaseField (generatedId = true, columnName = APIARY_ID)
     private int apiaryID;
     @DatabaseField
     private String apiaryName;

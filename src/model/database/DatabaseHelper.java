@@ -11,6 +11,7 @@ import model.Beehive;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -51,14 +52,75 @@ public class DatabaseHelper implements IDatabaseHelper {
     }
 
     @Override
-    public List<Beehive> getBeehivesFromApiary(int apiaryId){
+    public void updateApiary(Apiary apiary){
+        try {
+            apiaryDao.update(apiary);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    //Kasuje pasiekę i przenosi wszystkie ule do Storage
+    @Override
+    public void deleteApiary(Apiary apiary){
+        try {
+            List<Beehive> beehiveList = getBeehivesFromApiary(apiary);
+            for (Beehive beehive : beehiveList){
+                beehive.setInStorage(true);
+                updateBeehive(beehive);
+            }
+            apiaryDao.delete(apiary);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateBeehive(Beehive beehive){
+        try {
+            beehiveDao.update(beehive);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createNewBeehive(Beehive beehive) {
+        try {
+            beehiveDao.create(beehive);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteBeehive(Beehive beehive){
+        try {
+            beehiveDao.delete(beehive);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Beehive> getBeehivesFromApiary(Apiary apiary){
         List<Beehive> beehiveList= new ArrayList<>();
         try {
             QueryBuilder<Beehive, Integer> beehiveIntegerQueryBuilder= beehiveDao.queryBuilder();
-            PreparedQuery<Beehive> preparedQuery = beehiveIntegerQueryBuilder.where().eq(Beehive.APIARY_ID, apiaryId).prepare();
+            PreparedQuery<Beehive> preparedQuery = beehiveIntegerQueryBuilder.where().eq(Beehive.APIARY_ID, apiary.getApiaryID()).prepare();
             beehiveList = beehiveDao.query(preparedQuery);
         } catch (SQLException e){
             e.printStackTrace();
+        }
+
+        //Usuwa z listy Ule dla których isInStorage = true;
+        Iterator<Beehive> beehiveIterator = beehiveList.iterator();
+        Beehive beehive;
+        while(beehiveIterator.hasNext()){
+            beehive = beehiveIterator.next();
+            if(beehive.isInStorage()){
+                beehiveIterator.remove();
+            }
         }
         return beehiveList;
     }
@@ -72,6 +134,17 @@ public class DatabaseHelper implements IDatabaseHelper {
             e.printStackTrace();
         }
         return apiaryList;
+    }
+
+    @Override
+    public List<Beehive> getAllBeehives() {
+        List<Beehive> beehiveList = new ArrayList<>();
+        try {
+            beehiveList =  beehiveDao.queryForAll();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return beehiveList;
     }
 
     @Override

@@ -5,6 +5,7 @@ import model.Beehive;
 import model.database.DatabaseHelper;
 import model.database.IDatabaseHelper;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,8 +22,13 @@ public class SuperPresenter {
         return databaseHelper.getAllApiaries();
     }
 
-    public List<Beehive> getBeehivesFromApiary(int apiaryId){
-        return databaseHelper.getBeehivesFromApiary(apiaryId);
+    public List<Beehive> getBeehiveList(){
+        return databaseHelper.getAllBeehives();
+    }
+
+    //Zwraca tylko ule dla których isInStorage = false, zapewnione w DatabaseHelperze
+    public List<Beehive> getBeehivesFromApiary(Apiary apiary){
+        return databaseHelper.getBeehivesFromApiary(apiary);
     }
 
     //Zwraca pasiekę o konkretnym ID
@@ -36,7 +42,7 @@ public class SuperPresenter {
 
     public void createNewBeehive(){
         Beehive beehive = new Beehive();
-
+        databaseHelper.createNewBeehive(beehive);
     }
 
     public void createNewApiary(String name, int xSize, int ySize){
@@ -44,11 +50,11 @@ public class SuperPresenter {
         databaseHelper.createNewApiary(apiary);
     }
 
-    public void updateApiary(int apiaryID){
-
+    public void updateApiary(Apiary apiary){
+        databaseHelper.updateApiary(apiary);
     }
 
-    public void updateBeehive(int beehiveID){
-
+    public void updateBeehive(Beehive beehive){
+        databaseHelper.updateBeehive(beehive);
     }
 }

@@ -1,3 +1,4 @@
+import com.j256.ormlite.logger.LocalLog;
 import model.Apiary;
 import model.Beehive;
 import model.database.DatabaseHelper;
@@ -11,37 +12,29 @@ import java.awt.*;
  * Created by atticus on 3/5/16.
  */
 public class Main {
+    public static final boolean NO_GUI_MODE = true;
 
     public static void main(String args[]){
-        System.out.println("Main");
+        //Wyłącza logowanie z ORMLite
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
         final IDatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
 
-        //Testowanie zapytań do bazy danych
-        databaseHelper.createNewApiary(new Apiary("Testowa pasieka", 10, 10));
-
-        for(Apiary a : databaseHelper.getAllApiaries()){
-            System.out.println(a);
-        }
-
-        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0).getApiaryID())){
-            System.out.println(beehive);
-        }
+        databaseTestingMethod(databaseHelper);
 
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
-        EventQueue.invokeLater(new Runnable() {
+        if(!NO_GUI_MODE) {
+            EventQueue.invokeLater(new Runnable() {
 
-            @Override
-            public void run() {
-//                TestView testView = new TestView();
-//                testView.setTestPresenter(new TestPresenter(new TestModel(), testView));
-//                testView.setVisible(true);
+                @Override
+                public void run() {
 
-                SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
-                simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
-                simpleGUIMain.display();
-            }
-        });
+                    SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
+                    simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter());
+                    simpleGUIMain.display();
+                }
+            });
+        }
 
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -50,5 +43,32 @@ public class Main {
                 databaseHelper.closeConnection();
             }
         });
+    }
+
+    public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
+
+        //Testowanie zapytań do bazy danych
+        System.out.println("-------AFTER-ADDING-NEW-APIARY---------");
+        databaseHelper.createNewApiary(new Apiary("Testowa pasieka", 10, 10));
+
+        for(Apiary a : databaseHelper.getAllApiaries()){
+            System.out.println(a);
+        }
+
+        System.out.println("--------BEFORE-UPDATING-BEEHIVE---------");
+        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))){
+            System.out.println(beehive);
+        }
+
+        Beehive beehive1 = (databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))).get(0);
+        beehive1.setInStorage(true);
+        databaseHelper.updateBeehive(beehive1);
+
+        System.out.println("--------AFTER-UPDATING-BEEHIVE---------");
+
+        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))){
+            System.out.println(beehive);
+        }
+
     }
 }

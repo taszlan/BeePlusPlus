@@ -72,7 +72,7 @@ public class DatabaseCreator {
 
     public void fillDatabaseWithExampleData(ConnectionSource connectionSource){
         try {
-            if (DATABASE_LOGGIGNG_ENABLED) System.out.println("Creating sample objects");
+            if (DATABASE_LOGGIGNG_ENABLED) System.out.println("----CREATING-SAMPLE-OBJECTS------");
             Dao<Apiary, Integer> apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
             Dao<Beehive, Integer> beehiveDao = DaoManager.createDao(connectionSource, Beehive.class);
             Random generator = new Random();
@@ -108,7 +108,9 @@ public class DatabaseCreator {
 
             if(DATABASE_LOGGIGNG_ENABLED) {
                 List<Beehive> listOfBeehives = beehiveDao.queryForAll();
-                System.out.println("Listing database contents:");
+                System.out.println("----DATABASE-FILLED-WITH-SAMPLE-DATA-------");
+                System.out.println("------LISTING-DATABASE-CONTENTS------------");
+
                 for (Apiary a : listOfApiaries) {
                     System.out.println(a);
                 }

@@ -18,18 +18,21 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Beehive {
     public static final String APIARY_ID = "APIARY_ID";
     public static final String BEEHIVE_ID = "BEEHIVE_ID";
+    public static final String IS_IN_STORAGE = "IS_IN_STORAGE";
 
     @DatabaseField(generatedId = true, columnName = BEEHIVE_ID)
     private int database_id;
     @DatabaseField(columnName = APIARY_ID)
     private int apiaryId;
     @DatabaseField
+    private int queenId;
+    @DatabaseField
     private double weight;
     @DatabaseField
     private int xCoordinate;
     @DatabaseField
     private int yCoordinate;
-    @DatabaseField
+    @DatabaseField(columnName = IS_IN_STORAGE)
     private boolean isInStorage;
 
     public Beehive(){
@@ -44,12 +47,21 @@ public class Beehive {
         this.isInStorage = true;
     }
 
-    public Beehive(int apiaryId, double weight, int xCoordinate, int yCoordinate, boolean isInStorage){
+    public Beehive(int apiaryId, double weight, int xCoordinate, int yCoordinate, boolean isInStorage, int queenId){
         this.apiaryId = apiaryId;
         this.weight = weight;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.isInStorage = isInStorage;
+        this.queenId = queenId;
+    }
+
+    public int getQueenId() {
+        return queenId;
+    }
+
+    public void setQueenId(int queenId) {
+        this.queenId = queenId;
     }
 
     public int getDatabaseId() {
@@ -102,6 +114,7 @@ public class Beehive {
         return "Beehive{" +
                 "database_id=" + database_id +
                 ", apiaryId=" + apiaryId +
+                ", queenId=" + queenId +
                 ", weight=" + weight +
                 ", xCoordinate=" + xCoordinate +
                 ", yCoordinate=" + yCoordinate +

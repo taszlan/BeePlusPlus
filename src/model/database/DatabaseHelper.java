@@ -3,11 +3,13 @@ package model.database;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.logger.Log;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import model.Apiary;
 import model.Beehive;
+import model.Queen;
 import model.Storage;
 import model.database.interfaces.IDatabaseHelper;
 
@@ -28,6 +30,7 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
     Dao<Apiary, Integer> apiaryDao;
     Dao<Beehive, Integer> beehiveDao;
     Dao<Storage, Integer> storageDao;
+    Dao<Queen, Integer> queenDao;
 
     private DatabaseHelper(){
         try {
@@ -41,6 +44,7 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
             apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
             beehiveDao = DaoManager.createDao(connectionSource, Beehive.class);
             storageDao = DaoManager.createDao(connectionSource, Storage.class);
+            queenDao = DaoManager.createDao(connectionSource, Queen.class);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -50,6 +54,57 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
     public void createNewApiary(Apiary apiary){
         try {
             apiaryDao.create(apiary);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createNewQueen(Queen queen){
+        try {
+            queenDao.create(queen);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateQueen(Queen queen) {
+        try {
+            queenDao.update(queen);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Queen> getAllQueens() {
+        List<Queen> queenList = new ArrayList<>();
+        try {
+            queenList =  queenDao.queryForAll();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return queenList;
+    }
+
+    @Override
+    public Queen getQueenWithId(int queenId) {
+        Queen queen = new Queen();
+        try {
+            QueryBuilder<Queen, Integer> queenIntegerQueryBuilder= queenDao.queryBuilder();
+            PreparedQuery<Queen> preparedQuery = queenIntegerQueryBuilder.where().eq(Queen.QUEEN_ID, queenId).prepare();
+            queen = queenDao.queryForFirst(preparedQuery);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return queen;
+    }
+
+    @Override
+    public void deleteQueen(Queen queen) {
+        try {
+            queenDao.delete(queen);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -97,6 +152,19 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Beehive> getBeehivesFromStorage(){
+        List<Beehive> beehiveList= new ArrayList<>();
+        try {
+            QueryBuilder<Beehive, Integer> beehiveIntegerQueryBuilder= beehiveDao.queryBuilder();
+            PreparedQuery<Beehive> preparedQuery = beehiveIntegerQueryBuilder.where().eq(Beehive.IS_IN_STORAGE, true).prepare();
+            beehiveList = beehiveDao.query(preparedQuery);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return beehiveList;
     }
 
     @Override

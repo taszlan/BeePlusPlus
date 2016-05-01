@@ -6,9 +6,12 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import model.Apiary;
 import model.Beehive;
+import model.Queen;
 import model.Storage;
 import org.h2.jdbc.JdbcSQLException;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +26,7 @@ public class DatabaseCreator {
 
         try {
             Dao<DatabaseVersion, Integer> databaseVersionDao = DaoManager.createDao(connectionSource, DatabaseVersion.class);
+            Dao<Storage, Integer> storageDao = DaoManager.createDao(connectionSource, Storage.class);
 
             //Sprawdza czy istnieje tabela DatabaseVersion, nieszczególnie piękne ale działa
             try{
@@ -52,7 +56,10 @@ public class DatabaseCreator {
             if (databaseVersion.getVersion() < 2) {
                 System.out.println("Database version < 2");
 
+                TableUtils.createTable(connectionSource, Queen.class);
                 TableUtils.createTable(connectionSource, Storage.class);
+                Storage storage = new Storage(0, 0, 0, 0, 0);
+                storageDao.create(storage);
 
                 databaseVersion.setVersion(2);
                 databaseVersionHasChanged = true;
@@ -86,12 +93,14 @@ public class DatabaseCreator {
             Dao<Apiary, Integer> apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
             Dao<Beehive, Integer> beehiveDao = DaoManager.createDao(connectionSource, Beehive.class);
             Dao<Storage, Integer> storageDao = DaoManager.createDao(connectionSource, Storage.class);
+            Dao<Queen, Integer> queenDao = DaoManager.createDao(connectionSource, Queen.class);
             Random generator = new Random();
 
             //Najpierw trzeba wyczyścić tabele
             TableUtils.clearTable(connectionSource, Apiary.class);
             TableUtils.clearTable(connectionSource, Beehive.class);
             TableUtils.clearTable(connectionSource, Storage.class);
+            TableUtils.clearTable(connectionSource, Queen.class);
 
             //Potem dodać testowe obiekty - Apiary
             Apiary apiary1 = new Apiary("Pierwsza Pasieka", 100, 100);
@@ -101,43 +110,81 @@ public class DatabaseCreator {
 
             List<Apiary> listOfApiaries = apiaryDao.queryForAll();
 
+            //Storage
+            Storage storage = new Storage(0,0,0,0,0);
+            storageDao.create(storage);
+
+            //Testowe Queens
+            Queen queen;
+            for (int i = 0; i < 6; i++){
+                queen = new Queen("Królowa nr " + i, "Miejsce " +i, new Date());
+                queenDao.create(queen);
+            }
+
+
             //Testowe Beehives
-            Beehive beehive1 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
-            Beehive beehive2 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
-            Beehive beehive3 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
+            Beehive beehive1 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(0).getQueenId());
+            Beehive beehive2 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(1).getQueenId());
+            Beehive beehive3 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(2).getQueenId());
 
             beehiveDao.create(beehive1);
             beehiveDao.create(beehive2);
             beehiveDao.create(beehive3);
 
-            Beehive beehive4 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
-            Beehive beehive5 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
-            Beehive beehive6 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false);
+            Beehive beehive4 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(3).getQueenId());
+            Beehive beehive5 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(4).getQueenId());
+            Beehive beehive6 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, queenDao.queryForAll().get(5).getQueenId());
 
             beehiveDao.create(beehive4);
             beehiveDao.create(beehive5);
             beehiveDao.create(beehive6);
 
-            Storage storage = new Storage(0, generator.nextInt(100), generator.nextInt(100), generator.nextInt(100), generator.nextInt(100));
-            storageDao.create(storage);
+            Beehive beehive7 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), true, 0);
+            Beehive beehive8 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), true, 0);
+
+            beehiveDao.create(beehive7);
+            beehiveDao.create(beehive8);
+
+            Storage storage1 = storageDao.queryForAll().get(0);
+            storage1.setNumberOfBodies(generator.nextInt(100));
+            storage1.setNumberOfBottoms(generator.nextInt(100));
+            storage1.setNumberOfFrames(generator.nextInt(100));
+            storage1.setNumberOfRoofs(generator.nextInt(100));
+            storageDao.update(storage1);
 
             if(DATABASE_LOGGIGNG_ENABLED) {
                 List<Beehive> listOfBeehives = beehiveDao.queryForAll();
+                List<Queen> queenList = queenDao.queryForAll();
                 System.out.println("----DATABASE-FILLED-WITH-SAMPLE-DATA-------");
                 System.out.println("------LISTING-DATABASE-CONTENTS------------");
+                System.out.println("------LISTING-APIARIES---------------------");
 
                 for (Apiary a : listOfApiaries) {
                     System.out.println(a);
                 }
+
+                System.out.println("------LISTING-QUEENS----------------------");
+
+                for (Queen q : queenList){
+                    System.out.println(q);
+                }
+
+                System.out.println("------LISTING-BEEHIVES--------------------");
+
                 for (Beehive b : listOfBeehives) {
                     System.out.println(b);
                 }
 
+                System.out.println("------LISTING-STORAGE ---------------------");
                 System.out.println(storageDao.queryForAll());
+
+                System.out.println("------LISTING-BEEHIVES-IN-STORAGE---------");
+                System.out.println(beehiveDao.query(beehiveDao.queryBuilder().where().eq(Beehive.IS_IN_STORAGE, true).prepare()));
+
             }
 
         } catch (Exception e){
-
+e.printStackTrace();
         }
     }
 }

@@ -6,7 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
  * Created by atticus on 5/1/16.
  */
 public class Storage {
-    @DatabaseField
+    @DatabaseField(id = true)
     int storage_id;
     @DatabaseField
     int numberOfFrames;

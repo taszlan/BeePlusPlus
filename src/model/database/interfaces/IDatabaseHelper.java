@@ -2,6 +2,7 @@ package model.database.interfaces;
 
 import model.Apiary;
 import model.Beehive;
+import model.Queen;
 import model.Storage;
 
 import java.util.List;
@@ -11,31 +12,51 @@ import java.util.List;
  */
 public interface IDatabaseHelper {
 
+    //Apiary methods
     void createNewApiary(Apiary apiary);
 
     void updateApiary(Apiary apiary);
 
     void deleteApiary(Apiary apiary);
 
+    List<Apiary> getAllApiaries();
+
+    Apiary getApiaryWithId(int apiaryId);
+
+
+    //Beehive methods
     void createNewBeehive(Beehive beehive);
 
     void updateBeehive(Beehive beehive);
 
     void deleteBeehive(Beehive beehive);
 
+    List<Beehive> getBeehivesFromApiary(Apiary apiary);
+
+    List<Beehive> getAllBeehives();
+
+    Beehive getBeehiveWithId(int beehiveId);
+
+
+    //Queen methods
+    void createNewQueen(Queen queen);
+
+    void updateQueen(Queen queen);
+
+    List<Queen> getAllQueens();
+
+    Queen getQueenWithId(int queenId);
+
+    void deleteQueen(Queen queen);
+
+
+    //Storage methods
     Storage getStorage();
 
     void updateStorage(Storage storage);
 
-    List<Beehive> getBeehivesFromApiary(Apiary apiary);
+    List<Beehive> getBeehivesFromStorage();
 
-    List<Apiary> getAllApiaries();
-
-    List<Beehive> getAllBeehives();
-
-    Apiary getApiaryWithId(int apiaryId);
-
-    Beehive getBeehiveWithId(int beehiveId);
-
+    //Other methods
     void closeConnection();
 }

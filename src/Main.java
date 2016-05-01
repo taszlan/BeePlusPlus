@@ -15,7 +15,7 @@ public class Main {
     public static final boolean NO_GUI_MODE = true;
 
     public static void main(String args[]){
-        //Wyłącza logowanie z ORMLite
+        //Wyłącza logowanie z ORMLite DEBUG/ERROR
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
         final IDatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();

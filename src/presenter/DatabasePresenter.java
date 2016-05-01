@@ -2,10 +2,12 @@ package presenter;
 
 import model.Apiary;
 import model.Beehive;
+import model.Queen;
 import model.Storage;
 import model.database.DatabaseHelper;
 import model.database.interfaces.IDatabaseHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +66,34 @@ public abstract class DatabasePresenter {
 
     public void updateStorage(Storage storage){
         databaseHelper.updateStorage(storage);
+    }
+
+    public void createNewQueen(String race, String origin, Date date){
+        Queen queen = new Queen(race, origin, date);
+        databaseHelper.createNewQueen(queen);
+    }
+
+    //Ogólna metoda dodawania nowych, gotowyc obiektów do bazy danych
+    public void addNewObjectToDatabase(Object object){
+        if (object.getClass() == Apiary.class) databaseHelper.createNewApiary((Apiary) object);
+        if (object.getClass() == Beehive.class) databaseHelper.createNewBeehive((Beehive) object);
+        if (object.getClass() == Queen.class) databaseHelper.createNewQueen((Queen) object);
+    }
+
+    public void updateQueen(Queen queen){
+        databaseHelper.updateQueen(queen);
+    }
+
+    public List<Queen> getAllQueens(){
+        return databaseHelper.getAllQueens();
+    }
+
+    public Queen getQueenWithId(int queenId){
+        return databaseHelper.getQueenWithId(queenId);
+    }
+
+    public void deleteQueen(Queen queen){
+        databaseHelper.deleteQueen(queen);
     }
 
 }

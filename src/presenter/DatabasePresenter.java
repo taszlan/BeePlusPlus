@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Created by atticus on 4/30/16.
  */
-public class SuperPresenter {
+public class DatabasePresenter {
     IDatabaseHelper databaseHelper;
 
-    public SuperPresenter(){
+    public DatabasePresenter(){
         databaseHelper = DatabaseHelper.getDatabaseHelper();
     }
 

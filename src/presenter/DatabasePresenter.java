@@ -96,4 +96,7 @@ public abstract class DatabasePresenter {
         databaseHelper.deleteQueen(queen);
     }
 
+    public List<Beehive> getBeehivesFromStorage(){
+        return databaseHelper.getBeehivesFromStorage();
+    }
 }

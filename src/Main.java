@@ -2,7 +2,7 @@ import com.j256.ormlite.logger.LocalLog;
 import model.Apiary;
 import model.Beehive;
 import model.database.DatabaseHelper;
-import model.database.IDatabaseHelper;
+import model.database.interfaces.IDatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
 

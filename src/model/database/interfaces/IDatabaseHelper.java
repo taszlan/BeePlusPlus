@@ -1,7 +1,8 @@
-package model.database;
+package model.database.interfaces;
 
 import model.Apiary;
 import model.Beehive;
+import model.Storage;
 
 import java.util.List;
 
@@ -21,6 +22,10 @@ public interface IDatabaseHelper {
     void updateBeehive(Beehive beehive);
 
     void deleteBeehive(Beehive beehive);
+
+    Storage getStorage();
+
+    void updateStorage(Storage storage);
 
     List<Beehive> getBeehivesFromApiary(Apiary apiary);
 

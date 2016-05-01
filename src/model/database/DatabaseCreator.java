@@ -6,6 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import model.Apiary;
 import model.Beehive;
+import model.Storage;
 import org.h2.jdbc.JdbcSQLException;
 
 import java.util.List;
@@ -50,6 +51,15 @@ public class DatabaseCreator {
 
             if (databaseVersion.getVersion() < 2) {
                 System.out.println("Database version < 2");
+
+                TableUtils.createTable(connectionSource, Storage.class);
+
+                databaseVersion.setVersion(2);
+                databaseVersionHasChanged = true;
+            }
+
+            if (databaseVersion.getVersion() < 3) {
+                System.out.println("Database version < 3");
                 databaseVersionHasChanged = true;
             }
 
@@ -75,11 +85,13 @@ public class DatabaseCreator {
             if (DATABASE_LOGGIGNG_ENABLED) System.out.println("----CREATING-SAMPLE-OBJECTS------");
             Dao<Apiary, Integer> apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
             Dao<Beehive, Integer> beehiveDao = DaoManager.createDao(connectionSource, Beehive.class);
+            Dao<Storage, Integer> storageDao = DaoManager.createDao(connectionSource, Storage.class);
             Random generator = new Random();
 
             //Najpierw trzeba wyczyścić tabele
             TableUtils.clearTable(connectionSource, Apiary.class);
             TableUtils.clearTable(connectionSource, Beehive.class);
+            TableUtils.clearTable(connectionSource, Storage.class);
 
             //Potem dodać testowe obiekty - Apiary
             Apiary apiary1 = new Apiary("Pierwsza Pasieka", 100, 100);
@@ -106,6 +118,9 @@ public class DatabaseCreator {
             beehiveDao.create(beehive5);
             beehiveDao.create(beehive6);
 
+            Storage storage = new Storage(0, generator.nextInt(100), generator.nextInt(100), generator.nextInt(100), generator.nextInt(100));
+            storageDao.create(storage);
+
             if(DATABASE_LOGGIGNG_ENABLED) {
                 List<Beehive> listOfBeehives = beehiveDao.queryForAll();
                 System.out.println("----DATABASE-FILLED-WITH-SAMPLE-DATA-------");
@@ -117,6 +132,8 @@ public class DatabaseCreator {
                 for (Beehive b : listOfBeehives) {
                     System.out.println(b);
                 }
+
+                System.out.println(storageDao.queryForAll());
             }
 
         } catch (Exception e){

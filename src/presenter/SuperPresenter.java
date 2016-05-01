@@ -2,10 +2,10 @@ package presenter;
 
 import model.Apiary;
 import model.Beehive;
+import model.Storage;
 import model.database.DatabaseHelper;
-import model.database.IDatabaseHelper;
+import model.database.interfaces.IDatabaseHelper;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ public class SuperPresenter {
         return databaseHelper.getBeehivesFromApiary(apiary);
     }
 
-    //Zwraca pasiekę o konkretnym ID
+    //Zwraca pasiekę o konkretnym ID - nie wiem czy potrzebne
     public Apiary getApiaryWithID(int id){
         return databaseHelper.getApiaryWithId(id);
     }
@@ -57,4 +57,13 @@ public class SuperPresenter {
     public void updateBeehive(Beehive beehive){
         databaseHelper.updateBeehive(beehive);
     }
+
+    public Storage getStorage(){
+        return databaseHelper.getStorage();
+    }
+
+    public void updateStorage(Storage storage){
+        databaseHelper.updateStorage(storage);
+    }
+
 }

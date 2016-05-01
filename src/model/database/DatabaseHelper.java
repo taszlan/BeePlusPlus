@@ -8,6 +8,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import model.Apiary;
 import model.Beehive;
+import model.Storage;
+import model.database.interfaces.IDatabaseHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by atticus on 07.04.16.
  */
-public class DatabaseHelper implements IDatabaseHelper {
+public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper {
 
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
     private static IDatabaseHelper IDatabaseHelper;
@@ -25,6 +27,7 @@ public class DatabaseHelper implements IDatabaseHelper {
     Dao<DatabaseVersion, Integer> databaseVersionDao;
     Dao<Apiary, Integer> apiaryDao;
     Dao<Beehive, Integer> beehiveDao;
+    Dao<Storage, Integer> storageDao;
 
     private DatabaseHelper(){
         try {
@@ -37,6 +40,7 @@ public class DatabaseHelper implements IDatabaseHelper {
             databaseVersionDao= DaoManager.createDao(connectionSource, DatabaseVersion.class);
             apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
             beehiveDao = DaoManager.createDao(connectionSource, Beehive.class);
+            storageDao = DaoManager.createDao(connectionSource, Storage.class);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -70,6 +74,26 @@ public class DatabaseHelper implements IDatabaseHelper {
                 updateBeehive(beehive);
             }
             apiaryDao.delete(apiary);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Storage getStorage(){
+        Storage storage = null;
+        try {
+            storage = storageDao.queryForAll().get(0);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return storage;
+    }
+
+    @Override
+    public void updateStorage(Storage storage){
+        try {
+            storageDao.update(storage);
         } catch (SQLException e){
             e.printStackTrace();
         }

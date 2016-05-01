@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by atticus on 4/30/16.
  */
-public class DatabasePresenter {
+public abstract class DatabasePresenter {
     IDatabaseHelper databaseHelper;
 
     public DatabasePresenter(){

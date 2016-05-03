@@ -2,6 +2,7 @@ import com.j256.ormlite.logger.LocalLog;
 import model.Apiary;
 import model.Beehive;
 import model.database.DatabaseHelper;
+import model.database.DatabaseHelperSingleton;
 import model.database.interfaces.IDatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
@@ -18,7 +19,7 @@ public class Main {
         //Wyłącza logowanie z ORMLite DEBUG/ERROR
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
-        final IDatabaseHelper databaseHelper = DatabaseHelper.getDatabaseHelper();
+        final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
 
         databaseTestingMethod(databaseHelper);
 

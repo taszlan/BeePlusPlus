@@ -32,7 +32,7 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
     Dao<Storage, Integer> storageDao;
     Dao<Queen, Integer> queenDao;
 
-    private DatabaseHelper(){
+    public DatabaseHelper(){
         try {
             String databaseUrl = "jdbc:h2:file:./beeplusplus";
 
@@ -273,14 +273,4 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
 
         }
     }
-
-
-    public static IDatabaseHelper getDatabaseHelper(){
-        if(IDatabaseHelper == null){
-            IDatabaseHelper = new DatabaseHelper();
-        }
-
-        return IDatabaseHelper;
-    }
-
 }

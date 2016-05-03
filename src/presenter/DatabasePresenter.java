@@ -5,6 +5,7 @@ import model.Beehive;
 import model.Queen;
 import model.Storage;
 import model.database.DatabaseHelper;
+import model.database.DatabaseHelperSingleton;
 import model.database.interfaces.IDatabaseHelper;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ public abstract class DatabasePresenter {
     IDatabaseHelper databaseHelper;
 
     public DatabasePresenter(){
-        databaseHelper = DatabaseHelper.getDatabaseHelper();
+        databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
     }
 
     public List<Apiary> getApiaryList(){

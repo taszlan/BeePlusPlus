@@ -71,6 +71,8 @@ public class Beehive {
     public void setId(int id) {
         this.database_id = id;
     }
+    
+    
 
     public int getApiaryId() {
         return apiaryId;

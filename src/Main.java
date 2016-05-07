@@ -13,7 +13,7 @@ import java.awt.*;
  * Created by atticus on 3/5/16.
  */
 public class Main {
-    public static final boolean NO_GUI_MODE = true;
+    public static final boolean NO_GUI_MODE = false;
 
     public static void main(String args[]){
         //Wyłącza logowanie z ORMLite DEBUG/ERROR

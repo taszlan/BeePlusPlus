@@ -1,5 +1,6 @@
 package view;
 import presenter.SimpleGUIPresenter;
+
 import java.util.Scanner;
 import java.util.List;
 
@@ -10,9 +11,16 @@ import java.util.ArrayList;
 
 public class ApiaryMenu {
 	
+	private List<Beehive> listOfApiaryBeehives;
 	private List<Apiary> listOfApiaries;
-	private List<Beehive> listOfBeehives;
 	private SimpleGUIPresenter simpleGUIPresenter;
+	
+	private int apiaryIDTest;
+	private int temp;
+	private int test;
+	private int i;
+	private int j;
+	private Apiary apiary;
 
 	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
 		this.simpleGUIPresenter = simpleGUIPresenter;
@@ -22,71 +30,61 @@ public class ApiaryMenu {
 	        return simpleGUIPresenter;
 	    }
 
-	private Scanner input = new Scanner(System.in);
+//	private Scanner input = new Scanner(System.in);
 	
-	public void display(String apiaryName){
-		
-		
+public void display(Apiary apiaryName){
+	
+
+	//	Apiary apiaryTest = new Apiary();
+	//	apiaryTest = apiaryName;
 		System.out.println(apiaryName);
+	//	System.out.println(apiaryTest);
+	
+	
+		listOfApiaryBeehives = simpleGUIPresenter.getBeehivesFromApiary(apiaryName);
+				
 		
-		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
-		//listOfBeehives = simpleGUIPresenter.getBeehivesFromApiary() ;
+		
 
-		for(Beehive a : listOfBeehives){
+	for(Beehive b : listOfApiaryBeehives){
 			
-			//1System.out.println(a.getBehiveWithID(a));
-		}
-		
+	System.out.println(b);
+	}
+	
+	}
+	
+	
 
 		
-//		int selection = input.nextInt();
+	//	int selection = input.nextInt();
 		
-//		input.hasNextLine();
+	//	input.hasNextLine();
 	
 		
-//		for (int i = 0; i < listOfBeehives.size(); i++) {
-//		 		Beehive element = listOfBeehives.get(i);
+	//	for (int i = 0; i < listOfApiaries.size(); i++) {
+	//	 		Apiary element = listOfApiaries.get(i);
 		
-//		  		int j  	;
-//		  		j = 1+i;
+	//	  		int j  	;
+	//	  		j = 1+i;
 	
-//				if(selection == j){
-//					BeehiveOptions beehiveOptions = new BeehiveOptions();
-//					beehiveOptions.display(element.getBeeHiveId());
+	//			if(selection == j){
+	//				ApiaryMenu apiaryMenu = new ApiaryMenu();
+	//				apiaryMenu.display(element.getApiaryName());
 		
-//					break;
-//					}
-//					j++;
-//		}
-	}
-		
-		
-	//	System.out.println(
-	//			"Select menu: \n" +
-	//			"1) Ul \n" +
-	//			"2) Exit \n"
-//				);
-	//int selection = input.nextInt();
-//	input.hasNextLine();
+	//				break;
+	//				}
+	//				j++;
 	
 	
-//	switch (selection){
+			
+
+
+
+ 
 	
 	
-//	case 1:
-//		this.openUlMenu();
-//		break;
-//	case 2:
-//		this.exit();
-//		break;
-//	default:
-//		System.out.println("Niepoprawny wyb�r");
-//		break;
-//	}
+
 	
-	private void openUlMenu(){
-		System.out.println("will get Ul menu here");
-	}
 	private void exit(){
 		System.out.println("Exiting...");
 		System.exit(1);

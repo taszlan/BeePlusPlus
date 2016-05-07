@@ -13,6 +13,7 @@ public class ApiariesMenu {
 	private Scanner input = new Scanner(System.in);
 	
 	private List<Apiary> listOfApiaries;
+	
 	private SimpleGUIPresenter simpleGUIPresenter;
 
 	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
@@ -30,6 +31,7 @@ public class ApiariesMenu {
 	public void display(){
 		
 		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
+		
 
 		for(Apiary a : listOfApiaries){
 			
@@ -44,14 +46,22 @@ public class ApiariesMenu {
 	
 		
 		for (int i = 0; i < listOfApiaries.size(); i++) {
-		 		Apiary element = listOfApiaries.get(i);
+		 		Apiary element = new Apiary();
+		 		
+		 		element = listOfApiaries.get(i);
 		
 		  		int j  	;
 		  		j = 1+i;
+		  		
+		  		System.out.println("apitest id 1 ,"+element.getApiaryID());
 	
 				if(selection == j){
 					ApiaryMenu apiaryMenu = new ApiaryMenu();
-					apiaryMenu.display(element.getApiaryName());
+					System.out.println("apiiary id 2 ,"+element.getApiaryID());
+					
+					apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(element.getApiaryID()));
+					
+					
 		
 					break;
 					}

@@ -23,6 +23,7 @@ public class Main {
 
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
 
+
         DatabaseCreator databaseCreator = new DatabaseCreator();
         databaseCreator.createDatabase();
         databaseCreator.printLog();

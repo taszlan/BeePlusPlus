@@ -2,6 +2,9 @@ package model;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import model.database.DatabaseHelper;
+import model.database.DatabaseHelperSingleton;
+import model.database.interfaces.IDatabaseHelper;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -33,6 +36,9 @@ public class Apiary {
         this.apiaryName = apiaryName;
         this.xSize = xSize;
         this.ySize = ySize;
+
+        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        databaseHelper.createNewApiary(this);
     }
 
     public int getApiaryID() {

@@ -64,41 +64,24 @@ public class DatabaseCreator {
             //Potem dodać testowe obiekty - Apiary
             Apiary apiary1 = new Apiary("Pierwsza Pasieka", 100, 100);
             Apiary apiary2 = new Apiary("Druga Pasieka", 100, 100);
-            databaseHelper.createNewApiary(apiary1);
-            databaseHelper.createNewApiary(apiary2);
 
             List<Apiary> listOfApiaries = databaseHelper.getAllApiaries();
-            
+
             //Testowe Queens
             Queen queen;
             for (int i = 0; i < 6; i++){
                 queen = new Queen("Królowa nr " + i, "Miejsce " +i, new Date());
-                databaseHelper.createNewQueen(queen);
             }
 
             //Testowe Beehives
             Beehive beehive1 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(0).getQueenId());
             Beehive beehive2 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(1).getQueenId());
             Beehive beehive3 = new Beehive(listOfApiaries.get(0).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(2).getQueenId());
-
-            databaseHelper.createNewBeehive(beehive1);
-            databaseHelper.createNewBeehive(beehive2);
-            databaseHelper.createNewBeehive(beehive3);
-
             Beehive beehive4 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(3).getQueenId());
             Beehive beehive5 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(4).getQueenId());
             Beehive beehive6 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), false, databaseHelper.getAllQueens().get(5).getQueenId());
-
-            databaseHelper.createNewBeehive(beehive4);
-            databaseHelper.createNewBeehive(beehive5);
-            databaseHelper.createNewBeehive(beehive6);
-
-
             Beehive beehive7 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), true, 0);
             Beehive beehive8 = new Beehive(listOfApiaries.get(1).getApiaryID(), 10*generator.nextDouble(), generator.nextInt(10), generator.nextInt(10), true, 0);
-
-            databaseHelper.createNewBeehive(beehive7);
-            databaseHelper.createNewBeehive(beehive8);
 
             databaseHelper.createStorage(new Storage(0,0,0,0,0));
 

@@ -1,6 +1,8 @@
 package model;
 
 import com.j256.ormlite.field.DatabaseField;
+import model.database.DatabaseHelperSingleton;
+import model.database.interfaces.IDatabaseHelper;
 
 import java.util.Date;
 
@@ -27,6 +29,9 @@ public class Queen {
         this.queenRace = queenRace;
         this.queenOrigin = queenOrigin;
         this.queenBirthDate = queenBirthDate;
+
+        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        databaseHelper.createNewQueen(this);
     }
 
     public int getQueenId() {

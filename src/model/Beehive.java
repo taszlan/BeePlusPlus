@@ -2,6 +2,8 @@ package model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import model.database.DatabaseHelperSingleton;
+import model.database.interfaces.IDatabaseHelper;
 
 /**
  * Created by atticus on 3/18/16.
@@ -45,6 +47,9 @@ public class Beehive {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.isInStorage = true;
+
+        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        databaseHelper.createNewBeehive(this);
     }
 
     public Beehive(int apiaryId, double weight, int xCoordinate, int yCoordinate, boolean isInStorage, int queenId){
@@ -54,6 +59,9 @@ public class Beehive {
         this.yCoordinate = yCoordinate;
         this.isInStorage = isInStorage;
         this.queenId = queenId;
+
+        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        databaseHelper.createNewBeehive(this);
     }
 
     public int getQueenId() {

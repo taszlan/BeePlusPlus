@@ -26,18 +26,19 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
     private static IDatabaseHelper IDatabaseHelper;
     private ConnectionSource connectionSource;
-    Dao<DatabaseVersion, Integer> databaseVersionDao;
-    Dao<Apiary, Integer> apiaryDao;
-    Dao<Beehive, Integer> beehiveDao;
-    Dao<Storage, Integer> storageDao;
-    Dao<Queen, Integer> queenDao;
+    private Dao<DatabaseVersion, Integer> databaseVersionDao;
+    private Dao<Apiary, Integer> apiaryDao;
+    private Dao<Beehive, Integer> beehiveDao;
+    private Dao<Storage, Integer> storageDao;
+    private Dao<Queen, Integer> queenDao;
+    private DatabaseCreator databaseCreator;
 
     public DatabaseHelper(){
         try {
             String databaseUrl = "jdbc:h2:file:./beeplusplus";
 
             connectionSource = new JdbcConnectionSource(databaseUrl);
-            DatabaseCreator databaseCreator = new DatabaseCreator();
+            databaseCreator = new DatabaseCreator();
             databaseCreator.createDatabase(connectionSource);
 
             databaseVersionDao= DaoManager.createDao(connectionSource, DatabaseVersion.class);
@@ -49,6 +50,11 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
             e.printStackTrace();
         }
     }
+
+    public void printDatabaseLog(){
+        databaseCreator.printLog();
+    }
+
 
     @Override
     public void createNewApiary(Apiary apiary){

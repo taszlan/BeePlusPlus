@@ -59,4 +59,6 @@ public interface IDatabaseHelper {
 
     //Other methods
     void closeConnection();
+
+    void printDatabaseLog();
 }

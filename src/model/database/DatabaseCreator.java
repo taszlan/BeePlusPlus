@@ -8,6 +8,7 @@ import model.Apiary;
 import model.Beehive;
 import model.Queen;
 import model.Storage;
+import model.database.interfaces.IDatabaseHelper;
 import org.h2.jdbc.JdbcSQLException;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Random;
  * Created by atticus on 4/30/16.
  */
 public class DatabaseCreator {
-    private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
+    private final static boolean DATABASE_LOGGIGNG_ENABLED = false;
 
     public void createDatabase(ConnectionSource connectionSource){
         boolean databaseVersionHasChanged = false;
@@ -152,39 +153,52 @@ public class DatabaseCreator {
             storage1.setNumberOfRoofs(generator.nextInt(100));
             storageDao.update(storage1);
 
-            if(DATABASE_LOGGIGNG_ENABLED) {
-                List<Beehive> listOfBeehives = beehiveDao.queryForAll();
-                List<Queen> queenList = queenDao.queryForAll();
-                System.out.println("----DATABASE-FILLED-WITH-SAMPLE-DATA-------");
-                System.out.println("------LISTING-DATABASE-CONTENTS------------");
-                System.out.println("------LISTING-APIARIES---------------------");
-
-                for (Apiary a : listOfApiaries) {
-                    System.out.println(a);
-                }
-
-                System.out.println("------LISTING-QUEENS----------------------");
-
-                for (Queen q : queenList){
-                    System.out.println(q);
-                }
-
-                System.out.println("------LISTING-BEEHIVES--------------------");
-
-                for (Beehive b : listOfBeehives) {
-                    System.out.println(b);
-                }
-
-                System.out.println("------LISTING-STORAGE ---------------------");
-                System.out.println(storageDao.queryForAll());
-
-                System.out.println("------LISTING-BEEHIVES-IN-STORAGE---------");
-                System.out.println(beehiveDao.query(beehiveDao.queryBuilder().where().eq(Beehive.IS_IN_STORAGE, true).prepare()));
-
-            }
-
         } catch (Exception e){
 e.printStackTrace();
         }
+    }
+
+    public void printLog(){
+        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        List<Beehive> listOfBeehives = databaseHelper.getAllBeehives();
+        List<Apiary> listOfApiaries = databaseHelper.getAllApiaries();
+        List<Queen> queenList = databaseHelper.getAllQueens();
+
+        System.out.println("----DATABASE-FILLED-WITH-SAMPLE-DATA-------");
+        System.out.println("------LISTING-DATABASE-CONTENTS------------");
+        System.out.println("------LISTING-APIARIES---------------------");
+
+        for (Apiary a : listOfApiaries) {
+            System.out.println(a);
+        }
+
+        System.out.println("------LISTING-QUEENS----------------------");
+
+        for (Queen q : queenList){
+            System.out.println(q);
+        }
+
+        System.out.println("------LISTING-BEEHIVES--------------------");
+
+        for (Beehive b : listOfBeehives) {
+            System.out.println(b);
+        }
+
+        System.out.println("------LISTING-BEEHIVES-IN-APIARIES--------");
+        for (Apiary a : listOfApiaries) {
+            System.out.println(a);
+                    List<Beehive> beehiveList = databaseHelper.getBeehivesFromApiary(a);
+                    for(Beehive b : beehiveList){
+                        System.out.println("----> " + b);
+                    }
+        }
+
+
+
+        System.out.println("------LISTING-STORAGE ---------------------");
+        System.out.println(databaseHelper.getStorage());
+
+        System.out.println("------LISTING-BEEHIVES-IN-STORAGE---------");
+        System.out.println(databaseHelper.getBeehivesFromStorage());
     }
 }

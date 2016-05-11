@@ -13,18 +13,18 @@ import java.awt.*;
  * Created by atticus on 3/5/16.
  */
 public class Main {
-    public static final boolean NO_GUI_MODE = false;
+    public static final boolean GUI_MODE = false;
 
     public static void main(String args[]){
         //Wyłącza logowanie z ORMLite DEBUG/ERROR
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "DEBUG");
 
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-
+        databaseHelper.printDatabaseLog();
         databaseTestingMethod(databaseHelper);
 
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
-        if(!NO_GUI_MODE) {
+        if(GUI_MODE) {
             EventQueue.invokeLater(new Runnable() {
 
                 @Override

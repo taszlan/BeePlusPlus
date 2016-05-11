@@ -4,7 +4,10 @@ import model.Apiary;
 import model.Beehive;
 import model.Queen;
 import model.Storage;
+import model.database.DatabaseVersion;
+import org.h2.jdbc.JdbcSQLException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -51,14 +54,25 @@ public interface IDatabaseHelper {
 
 
     //Storage methods
+    void createStorage(Storage storage);
+
     Storage getStorage();
 
     void updateStorage(Storage storage);
 
     List<Beehive> getBeehivesFromStorage();
 
+    //DatabaseVersion
+    List<DatabaseVersion> getDatabaseVersions() throws JdbcSQLException;
+
+    void updateDatabaseVersion(DatabaseVersion databaseVersion);
+
+    void createDatabaseVersion(DatabaseVersion databaseVersion);
+
     //Other methods
     void closeConnection();
 
-    void printDatabaseLog();
+    void createTables();
+
+    void clearTables();
 }

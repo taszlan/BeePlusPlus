@@ -1,6 +1,7 @@
 import com.j256.ormlite.logger.LocalLog;
 import model.Apiary;
 import model.Beehive;
+import model.database.DatabaseCreator;
 import model.database.DatabaseHelper;
 import model.database.DatabaseHelperSingleton;
 import model.database.interfaces.IDatabaseHelper;
@@ -17,10 +18,14 @@ public class Main {
 
     public static void main(String args[]){
         //Wyłącza logowanie z ORMLite DEBUG/ERROR
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "DEBUG");
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+
 
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-        databaseHelper.printDatabaseLog();
+
+        DatabaseCreator databaseCreator = new DatabaseCreator();
+        databaseCreator.createDatabase();
+        databaseCreator.printLog();
         databaseTestingMethod(databaseHelper);
 
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D

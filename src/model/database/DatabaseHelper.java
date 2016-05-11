@@ -2,16 +2,19 @@ package model.database;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.logger.Log;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
 import model.Storage;
 import model.database.interfaces.IDatabaseHelper;
+import org.h2.jdbc.JdbcSQLException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,15 +34,12 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
     private Dao<Beehive, Integer> beehiveDao;
     private Dao<Storage, Integer> storageDao;
     private Dao<Queen, Integer> queenDao;
-    private DatabaseCreator databaseCreator;
 
     public DatabaseHelper(){
         try {
             String databaseUrl = "jdbc:h2:file:./beeplusplus";
 
             connectionSource = new JdbcConnectionSource(databaseUrl);
-            databaseCreator = new DatabaseCreator();
-            databaseCreator.createDatabase(connectionSource);
 
             databaseVersionDao= DaoManager.createDao(connectionSource, DatabaseVersion.class);
             apiaryDao =  DaoManager.createDao(connectionSource, Apiary.class);
@@ -51,9 +51,6 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
         }
     }
 
-    public void printDatabaseLog(){
-        databaseCreator.printLog();
-    }
 
 
     @Override
@@ -277,6 +274,71 @@ public class DatabaseHelper implements model.database.interfaces.IDatabaseHelper
             connectionSource.close();
         } catch (Exception e){
 
+        }
+    }
+
+    @Override
+    public List<DatabaseVersion> getDatabaseVersions() throws JdbcSQLException{
+        List<DatabaseVersion> databaseVersions = new ArrayList<>();
+        try {
+            databaseVersions = databaseVersionDao.queryForAll();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return databaseVersions;
+    }
+
+
+    @Override
+    public void updateDatabaseVersion(DatabaseVersion databaseVersion){
+        try {
+            databaseVersionDao.update(databaseVersion);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createDatabaseVersion(DatabaseVersion databaseVersion){
+        try {
+            databaseVersionDao.create(databaseVersion);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createTables(){
+        try {
+            TableUtils.createTable(connectionSource, DatabaseVersion.class);
+            TableUtils.createTable(connectionSource, Apiary.class);
+            TableUtils.createTable(connectionSource, Beehive.class);
+            TableUtils.createTable(connectionSource, Queen.class);
+            TableUtils.createTable(connectionSource, Storage.class);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createStorage(Storage storage){
+        try {
+            storageDao.create(storage);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void clearTables(){
+        try {
+            TableUtils.clearTable(connectionSource, Apiary.class);
+            TableUtils.clearTable(connectionSource, Beehive.class);
+            TableUtils.clearTable(connectionSource, Storage.class);
+            TableUtils.clearTable(connectionSource, Queen.class);
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 }

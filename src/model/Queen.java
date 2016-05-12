@@ -1,18 +1,16 @@
 package model;
 
 import com.j256.ormlite.field.DatabaseField;
-import model.database.DatabaseHelperSingleton;
-import model.database.interfaces.IDatabaseHelper;
+import model.database.access.interfaces.HasID;
 
 import java.util.Date;
 
 /**
  * Created by atticus on 5/1/16.
  */
-public class Queen {
-    public static final String QUEEN_ID = "QUEEN_ID";
+public class Queen implements HasID{
 
-    @DatabaseField(generatedId = true, columnName = QUEEN_ID)
+    @DatabaseField(generatedId = true, columnName = ID)
     int queenId;
     @DatabaseField
     String queenRace;
@@ -29,9 +27,6 @@ public class Queen {
         this.queenRace = queenRace;
         this.queenOrigin = queenOrigin;
         this.queenBirthDate = queenBirthDate;
-
-        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-        databaseHelper.createNewQueen(this);
     }
 
     public int getQueenId() {

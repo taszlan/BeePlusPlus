@@ -1,4 +1,4 @@
-package model.database;
+package model.database.general;
 
 import com.j256.ormlite.field.DatabaseField;
 

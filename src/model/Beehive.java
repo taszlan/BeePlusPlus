@@ -2,8 +2,7 @@ package model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import model.database.DatabaseHelperSingleton;
-import model.database.interfaces.IDatabaseHelper;
+import model.database.access.interfaces.HasID;
 
 /**
  * Created by atticus on 3/18/16.
@@ -17,12 +16,11 @@ import model.database.interfaces.IDatabaseHelper;
  *            ula z magazynu do konkretenj pasieki.
  */
 @DatabaseTable(tableName = "beehives")
-public class Beehive {
+public class Beehive implements HasID{
     public static final String APIARY_ID = "APIARY_ID";
-    public static final String BEEHIVE_ID = "BEEHIVE_ID";
     public static final String IS_IN_STORAGE = "IS_IN_STORAGE";
 
-    @DatabaseField(generatedId = true, columnName = BEEHIVE_ID)
+    @DatabaseField(generatedId = true, columnName = ID)
     private int database_id;
     @DatabaseField(columnName = APIARY_ID)
     private int apiaryId;
@@ -47,9 +45,6 @@ public class Beehive {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.isInStorage = true;
-
-        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-        databaseHelper.createNewBeehive(this);
     }
 
     public Beehive(int apiaryId, double weight, int xCoordinate, int yCoordinate, boolean isInStorage, int queenId){
@@ -59,9 +54,6 @@ public class Beehive {
         this.yCoordinate = yCoordinate;
         this.isInStorage = isInStorage;
         this.queenId = queenId;
-
-        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-        databaseHelper.createNewBeehive(this);
     }
 
     public int getQueenId() {

@@ -1,26 +1,17 @@
 package model;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import model.database.DatabaseHelper;
-import model.database.DatabaseHelperSingleton;
-import model.database.interfaces.IDatabaseHelper;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import model.database.access.interfaces.HasID;
 
 /**
  * Created by atticus on 3/18/16.
  *
  */
-public class Apiary {
+public class Apiary implements HasID{
     private static final int MAX_APIARY_X_SIZE = 100;
     private static final int MAX_APIARY_Y_SIZE = 100;
-    public static final String APIARY_ID = "APIARY+ID";
 
-    @DatabaseField (generatedId = true, columnName = APIARY_ID)
+    @DatabaseField (generatedId = true, columnName = ID)
     private int apiaryID;
     @DatabaseField
     private String apiaryName;
@@ -36,9 +27,6 @@ public class Apiary {
         this.apiaryName = apiaryName;
         this.xSize = xSize;
         this.ySize = ySize;
-
-        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-        databaseHelper.createNewApiary(this);
     }
 
     public int getApiaryID() {

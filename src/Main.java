@@ -1,10 +1,15 @@
 import com.j256.ormlite.logger.LocalLog;
 import model.Apiary;
 import model.Beehive;
-import model.database.DatabaseCreator;
-import model.database.DatabaseHelper;
-import model.database.DatabaseHelperSingleton;
-import model.database.interfaces.IDatabaseHelper;
+import model.Queen;
+import model.Storage;
+import model.database.access.DatabaseAccessObjectFactory;
+import model.database.access.DecoratedBeehiveDAO;
+import model.database.access.DecoratedStorageDAO;
+import model.database.general.DatabaseCreator;
+import model.database.general.DatabaseHelperSingleton;
+import model.database.access.interfaces.DatabaseAccessObject;
+import model.database.general.interfaces.IDatabaseHelper;
 import presenter.SimpleGUIPresenter;
 import view.SimpleGIUMainView;
 
@@ -20,14 +25,13 @@ public class Main {
         //Wyłącza logowanie z ORMLite DEBUG/ERROR
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
-
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-
 
         DatabaseCreator databaseCreator = new DatabaseCreator();
         databaseCreator.createDatabase();
-        databaseCreator.printLog();
-        databaseTestingMethod(databaseHelper);
+        databaseCreator.printLogUsingGenerics();
+        //databaseTestingMethod(databaseHelper);
+        DatabaseAccessObjectFactory databaseAccessObjectFactory = DatabaseAccessObjectFactory.getInstance();
 
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
         if(GUI_MODE) {
@@ -54,26 +58,32 @@ public class Main {
 
     public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
 
+        DatabaseAccessObject<Queen> queenDao = DatabaseAccessObjectFactory.getInstance().getDAO(Queen.class);
+        DatabaseAccessObject<Apiary> apiaryDao = DatabaseAccessObjectFactory.getInstance().getDAO(Apiary.class);
+        DatabaseAccessObject<Beehive> beehiveDao = DatabaseAccessObjectFactory.getInstance().getDAO(Beehive.class);
+        DecoratedBeehiveDAO decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
+        DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(DatabaseAccessObjectFactory.getInstance().getDAO(Storage.class));
+
         //Testowanie zapytań do bazy danych
         System.out.println("-------AFTER-ADDING-NEW-APIARY---------");
-        databaseHelper.createNewApiary(new Apiary("Testowa pasieka", 10, 10));
+        apiaryDao.create(new Apiary("Testowa pasieka", 10, 10));
 
-        for(Apiary a : databaseHelper.getAllApiaries()){
+        for(Apiary a : apiaryDao.getAll()){
             System.out.println(a);
         }
 
         System.out.println("--------BEFORE-UPDATING-BEEHIVE---------");
-        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))){
+        for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
             System.out.println(beehive);
         }
 
-        Beehive beehive1 = (databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))).get(0);
+        Beehive beehive1 = decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0)).get(0);
         beehive1.setInStorage(true);
-        databaseHelper.updateBeehive(beehive1);
+        beehiveDao.update(beehive1);
 
         System.out.println("--------AFTER-UPDATING-BEEHIVE---------");
 
-        for (Beehive beehive : databaseHelper.getBeehivesFromApiary(databaseHelper.getAllApiaries().get(0))){
+        for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
             System.out.println(beehive);
         }
 

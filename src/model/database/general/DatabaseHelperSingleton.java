@@ -1,6 +1,6 @@
-package model.database;
+package model.database.general;
 
-import model.database.interfaces.IDatabaseHelper;
+import model.database.general.interfaces.IDatabaseHelper;
 
 /**
  * Created by atticus on 5/3/16.

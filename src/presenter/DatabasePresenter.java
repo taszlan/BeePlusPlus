@@ -4,9 +4,10 @@ import model.Apiary;
 import model.Beehive;
 import model.Queen;
 import model.Storage;
-import model.database.DatabaseHelper;
-import model.database.DatabaseHelperSingleton;
-import model.database.interfaces.IDatabaseHelper;
+import model.database.access.DatabaseAccessObjectFactory;
+import model.database.access.DecoratedBeehiveDAO;
+import model.database.access.DecoratedStorageDAO;
+import model.database.access.interfaces.DatabaseAccessObject;
 
 import java.util.Date;
 import java.util.List;
@@ -15,89 +16,112 @@ import java.util.List;
  * Created by atticus on 4/30/16.
  */
 public abstract class DatabasePresenter {
-    IDatabaseHelper databaseHelper;
+    DatabaseAccessObjectFactory databaseAccessObjectFactory;
+    DatabaseAccessObject<Apiary> apiaryDao;
+    DatabaseAccessObject<Beehive> beehiveDao;
+    DatabaseAccessObject<Queen> queenDao;
+    DecoratedBeehiveDAO decoratedBeehiveDao;
+    DecoratedStorageDAO decoratedStorageDao;
 
     public DatabasePresenter(){
-        databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        databaseAccessObjectFactory = DatabaseAccessObjectFactory.getInstance();
+        apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+        beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+        queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+        decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
+        decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+
+    }
+
+    //Konstruktory na sterydach - tworzą nowe obiekty oraz dodają je do bazy danych.
+    public Beehive newBeehive(int apiaryId, double weight, int xCoordinate, int yCoordinate){
+        Beehive beehive = new Beehive(apiaryId, weight, xCoordinate, yCoordinate);
+        beehiveDao.create(beehive);
+        return beehive;
+    }
+
+    public Beehive newBeehive(int apiaryId, double weight, int xCoordinate, int yCoordinate, boolean isInStorage, int queenId){
+        Beehive beehive = new Beehive(apiaryId, weight, xCoordinate, yCoordinate, isInStorage, queenId);
+        beehiveDao.create(beehive);
+        return beehive;
+    }
+
+    public Apiary newApiary(String name, int xSize, int ySize){
+        Apiary apiary = new Apiary(name, xSize, ySize);
+        apiaryDao.create(apiary);
+        return apiary;
+    }
+
+    public Queen newQueen(String race, String origin, Date date){
+        Queen queen = new Queen(race, origin, date);
+        queenDao.create(queen);
+        return queen;
     }
 
     public List<Apiary> getApiaryList(){
-        return databaseHelper.getAllApiaries();
+        return apiaryDao.getAll();
     }
 
     public List<Beehive> getBeehiveList(){
-        return databaseHelper.getAllBeehives();
+        return decoratedBeehiveDao.getAll();
     }
 
     //Zwraca tylko ule dla których isInStorage = false, zapewnione w DatabaseHelperze
     public List<Beehive> getBeehivesFromApiary(Apiary apiary){
-        return databaseHelper.getBeehivesFromApiary(apiary);
+        return decoratedBeehiveDao.getBeehivesFromApiary(apiary);
     }
 
     //Zwraca pasiekę o konkretnym ID - nie wiem czy potrzebne
     public Apiary getApiaryWithID(int id){
-        return databaseHelper.getApiaryWithId(id);
+        return apiaryDao.getWithID(id);
     }
 
     public Beehive getBeehiveWithID(int id){
-        return databaseHelper.getBeehiveWithId(id);
-    }
-
-    public void createNewBeehive(){
-        Beehive beehive = new Beehive();
-        databaseHelper.createNewBeehive(beehive);
-    }
-
-    public void createNewApiary(String name, int xSize, int ySize){
-        Apiary apiary = new Apiary(name, xSize, ySize);
-        databaseHelper.createNewApiary(apiary);
+        return (Beehive) decoratedBeehiveDao.getWithID(id);
     }
 
     public void updateApiary(Apiary apiary){
-        databaseHelper.updateApiary(apiary);
+        apiaryDao.update(apiary);
     }
 
     public void updateBeehive(Beehive beehive){
-        databaseHelper.updateBeehive(beehive);
+       beehiveDao.update(beehive);
     }
 
     public Storage getStorage(){
-        return databaseHelper.getStorage();
+        return decoratedStorageDao.getStorage();
     }
 
     public void updateStorage(Storage storage){
-        databaseHelper.updateStorage(storage);
+        decoratedStorageDao.update(storage);
     }
 
-    public void createNewQueen(String race, String origin, Date date){
-        Queen queen = new Queen(race, origin, date);
-        databaseHelper.createNewQueen(queen);
-    }
 
-    //Ogólna metoda dodawania nowych, gotowyc obiektów do bazy danych
+
+    //Ogólna metoda dodawania nowych, gotowych obiektów do bazy danych
     public void addNewObjectToDatabase(Object object){
-        if (object.getClass() == Apiary.class) databaseHelper.createNewApiary((Apiary) object);
-        if (object.getClass() == Beehive.class) databaseHelper.createNewBeehive((Beehive) object);
-        if (object.getClass() == Queen.class) databaseHelper.createNewQueen((Queen) object);
+        if (object.getClass() == Apiary.class) apiaryDao.create((Apiary) object);
+        if (object.getClass() == Beehive.class) beehiveDao.create((Beehive) object);
+        if (object.getClass() == Queen.class) queenDao.create((Queen) object);
     }
 
     public void updateQueen(Queen queen){
-        databaseHelper.updateQueen(queen);
+       queenDao.update(queen);
     }
 
     public List<Queen> getAllQueens(){
-        return databaseHelper.getAllQueens();
+        return queenDao.getAll();
     }
 
     public Queen getQueenWithId(int queenId){
-        return databaseHelper.getQueenWithId(queenId);
+        return queenDao.getWithID(queenId);
     }
 
     public void deleteQueen(Queen queen){
-        databaseHelper.deleteQueen(queen);
+        queenDao.remove(queen);
     }
 
     public List<Beehive> getBeehivesFromStorage(){
-        return databaseHelper.getBeehivesFromStorage();
+        return decoratedStorageDao.getBeehivesFromStorage();
     }
 }

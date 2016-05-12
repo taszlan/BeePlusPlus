@@ -58,7 +58,7 @@ public class SimpleGIUMainView {
 			this.exit();
 			break;
 		default:
-			System.out.println("Niepoprawny wybór");
+			System.out.println("Niepoprawny wybï¿½r");
 			break;
 		
 		}

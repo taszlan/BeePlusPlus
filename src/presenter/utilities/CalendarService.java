@@ -46,7 +46,7 @@ public class CalendarService {
      * at ~/.credentials/calendar-java-quickstart.json
      */
     private static final List<String> SCOPES =
-            Arrays.asList(CalendarScopes.CALENDAR_READONLY);
+            Arrays.asList(CalendarScopes.CALENDAR);
 
     static {
         try {

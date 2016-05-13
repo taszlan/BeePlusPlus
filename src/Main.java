@@ -24,14 +24,18 @@ import java.io.IOException;
 public class Main {
     public static final boolean GUI_MODE = false;
     public static final boolean DATABASE_MODE = false;
-
+    public static final boolean DELETE_EVENTS_FROM_GOOGLE = false;
 
     public static void main(String args[]){
 
-            //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
-            //calendarQuickstart.runQuickstart();
-            GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
-            googleCalendarHelper.getEvents();
+        //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
+        //calendarQuickstart.runQuickstart();
+        GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
+        googleCalendarHelper.pushTestEvent();
+        googleCalendarHelper.getEvents();
+        if(DELETE_EVENTS_FROM_GOOGLE){
+            googleCalendarHelper.deleteAllEvents();
+        }
 
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
 

@@ -11,27 +11,39 @@ import model.database.general.DatabaseHelperSingleton;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.database.general.interfaces.IDatabaseHelper;
 import presenter.SimpleGUIPresenter;
+import presenter.utilities.CalendarQuickstart;
+import presenter.utilities.GoogleCalendarHelper;
 import view.SimpleGIUMainView;
 
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by atticus on 3/5/16.
  */
 public class Main {
     public static final boolean GUI_MODE = false;
+    public static final boolean DATABASE_MODE = false;
+
 
     public static void main(String args[]){
-        //Wyłącza logowanie z ORMLite DEBUG/ERROR
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+
+            //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
+            //calendarQuickstart.runQuickstart();
+            GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
+            googleCalendarHelper.getEvents();
 
         final IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
 
-        DatabaseCreator databaseCreator = new DatabaseCreator();
-        databaseCreator.createDatabase();
-        databaseCreator.printLogUsingGenerics();
-        //databaseTestingMethod(databaseHelper);
-        DatabaseAccessObjectFactory databaseAccessObjectFactory = DatabaseAccessObjectFactory.getInstance();
+        if(DATABASE_MODE) {
+            //Wyłącza logowanie z ORMLite DEBUG/ERROR
+            System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+
+            DatabaseCreator databaseCreator = new DatabaseCreator();
+            databaseCreator.createDatabase();
+            databaseCreator.printLogUsingGenerics();
+            //databaseTestingMethod(databaseHelper);
+        }
 
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
         if(GUI_MODE) {

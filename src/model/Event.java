@@ -1,6 +1,7 @@
 package model;
 
 import com.j256.ormlite.field.DatabaseField;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -18,15 +19,15 @@ public class Event implements HasID {
     @DatabaseField
     private String text;
     @DatabaseField
-    private Date startingDate;
+    private DateTime startingDate;
     @DatabaseField
-    private Date endnigDate;
+    private DateTime endnigDate;
     @DatabaseField
-    private Date reminderDate;
+    private DateTime reminderDate;
     @DatabaseField
     private boolean isSynchronized;
 
-    public Event(String title, String text, Date startingDate, Date endnigDate, Date reminderDate) {
+    public Event(String title, String text, DateTime startingDate, DateTime endnigDate, DateTime reminderDate) {
         this.title = title;
         this.text = text;
         this.startingDate = startingDate;
@@ -62,27 +63,27 @@ public class Event implements HasID {
         this.text = text;
     }
 
-    public Date getStartingDate() {
+    public DateTime getStartingDate() {
         return startingDate;
     }
 
-    public void setStartingDate(Date startingDate) {
+    public void setStartingDate(DateTime startingDate) {
         this.startingDate = startingDate;
     }
 
-    public Date getEndnigDate() {
+    public DateTime getEndnigDate() {
         return endnigDate;
     }
 
-    public void setEndnigDate(Date endnigDate) {
+    public void setEndnigDate(DateTime endnigDate) {
         this.endnigDate = endnigDate;
     }
 
-    public Date getReminderDate() {
+    public DateTime getReminderDate() {
         return reminderDate;
     }
 
-    public void setReminderDate(Date reminderDate) {
+    public void setReminderDate(DateTime reminderDate) {
         this.reminderDate = reminderDate;
     }
 

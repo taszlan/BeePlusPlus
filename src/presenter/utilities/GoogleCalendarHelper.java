@@ -2,11 +2,14 @@ package presenter.utilities;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com.google.api.services.calendar.model.Event;
+import general.Settings;
+import model.*;
+import org.joda.time.Minutes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +19,10 @@ public class GoogleCalendarHelper {
 
     private com.google.api.services.calendar.Calendar service;
     List<Event> items;
+    general.Settings settings;
 
     public GoogleCalendarHelper(){
+        settings = new Settings();
         try {
             // Build a new authorized API client service.
             // Note: Do not confuse this class with the
@@ -28,6 +33,53 @@ public class GoogleCalendarHelper {
             e.printStackTrace();
         }
     }
+
+    public void pushEvent(InternalEvent internalEvent){
+        Event googleEvent = new Event()
+                .setSummary(internalEvent.getSummary())
+                .setDescription(internalEvent.getDescription());
+
+        DateTime startDateTime = new DateTime(internalEvent.getStartDate().toDate());
+        EventDateTime start = new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("Europe/Warsaw");
+
+        googleEvent.setStart(start);
+
+        DateTime endDateTime = new DateTime(internalEvent.getEndDate().toDate());
+        EventDateTime end = new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("Europe/Warsaw");
+        googleEvent.setEnd(end);
+
+        List<String> listOfEmails = settings.getListOfEmails();
+        List<EventAttendee> listOfAttendees = new ArrayList<>();
+        for(String s : listOfEmails){
+            listOfAttendees.add(new EventAttendee().setEmail(s));
+        }
+        googleEvent.setAttendees(listOfAttendees);
+
+        EventReminder[] reminderOverrides = new EventReminder[]{
+                new EventReminder().setMethod("email").setMinutes(Minutes.minutesBetween(internalEvent.getNotificationDate(), internalEvent.getStartDate()).getMinutes()),
+        };
+
+        Event.Reminders reminders = new Event.Reminders()
+                .setUseDefault(false)
+                .setOverrides(Arrays.asList(reminderOverrides));
+
+        googleEvent.setReminders(reminders);
+
+        String calendarId = "primary";
+
+        try {
+            googleEvent = service.events().insert(calendarId, googleEvent).execute();
+            System.out.printf("Event created: %s\n", googleEvent.getHtmlLink());
+            System.out.println("Event googleId: " + googleEvent.getId());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void pushTestEvent(){
         Event event = new Event()
@@ -50,7 +102,7 @@ public class GoogleCalendarHelper {
         //event.setRecurrence(Arrays.asList(recurrence));
 
         EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail("beekeeper1@example.com"),
+                new EventAttendee().setEmail("beekeeper1@examlpe.com"),
                 new EventAttendee().setEmail("beekeeper2@example.com"),
         };
         event.setAttendees(Arrays.asList(attendees));

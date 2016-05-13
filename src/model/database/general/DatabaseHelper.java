@@ -5,10 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import model.Apiary;
-import model.Beehive;
-import model.Queen;
-import model.Storage;
+import model.*;
 import model.database.general.interfaces.IDatabaseHelper;
 import org.h2.jdbc.JdbcSQLException;
 
@@ -84,6 +81,7 @@ public class DatabaseHelper implements IDatabaseHelper {
             TableUtils.createTable(connectionSource, Beehive.class);
             TableUtils.createTable(connectionSource, Queen.class);
             TableUtils.createTable(connectionSource, Storage.class);
+            TableUtils.createTable(connectionSource, InternalEvent.class);
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -97,6 +95,7 @@ public class DatabaseHelper implements IDatabaseHelper {
             TableUtils.clearTable(connectionSource, Beehive.class);
             TableUtils.clearTable(connectionSource, Storage.class);
             TableUtils.clearTable(connectionSource, Queen.class);
+            TableUtils.createTable(connectionSource, InternalEvent.class);
         } catch (SQLException e){
             e.printStackTrace();
         }

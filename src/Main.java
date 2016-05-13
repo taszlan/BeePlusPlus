@@ -1,8 +1,6 @@
+import com.google.api.services.calendar.model.*;
 import com.j256.ormlite.logger.LocalLog;
-import model.Apiary;
-import model.Beehive;
-import model.Queen;
-import model.Storage;
+import model.*;
 import model.database.access.DatabaseAccessObjectFactory;
 import model.database.access.DecoratedBeehiveDAO;
 import model.database.access.DecoratedStorageDAO;
@@ -10,6 +8,7 @@ import model.database.general.DatabaseCreator;
 import model.database.general.DatabaseHelperSingleton;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.database.general.interfaces.IDatabaseHelper;
+import org.joda.time.DateTime;
 import presenter.SimpleGUIPresenter;
 import presenter.utilities.CalendarQuickstart;
 import presenter.utilities.GoogleCalendarHelper;
@@ -31,7 +30,15 @@ public class Main {
         //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
         //calendarQuickstart.runQuickstart();
         GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
-        googleCalendarHelper.pushTestEvent();
+        //googleCalendarHelper.pushTestEvent();
+
+        InternalEvent internalEvent = new InternalEvent("Dodawanie obiektów",
+                "Prosty test dodawania obiektów",
+                new DateTime().plusDays(1),
+                new DateTime().plusDays(1).plusHours(2),
+                new DateTime());
+
+        googleCalendarHelper.pushEvent(internalEvent);
         googleCalendarHelper.getEvents();
         if(DELETE_EVENTS_FROM_GOOGLE){
             googleCalendarHelper.deleteAllEvents();

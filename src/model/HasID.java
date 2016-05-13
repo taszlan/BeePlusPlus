@@ -1,4 +1,4 @@
-package model.database.access.interfaces;
+package model;
 
 /**
  * Created by atticus on 5/12/16.

@@ -1,7 +1,6 @@
 package model;
 
 import com.j256.ormlite.field.DatabaseField;
-import model.database.access.interfaces.HasID;
 
 /**
  * Created by atticus on 5/1/16.

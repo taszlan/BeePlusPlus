@@ -1,6 +1,7 @@
 package model.database.access.interfaces;
 
 import com.j256.ormlite.dao.Dao;
+import model.HasID;
 
 import java.util.List;
 

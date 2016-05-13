@@ -2,7 +2,7 @@ package model.database.access;
 
 import com.j256.ormlite.dao.Dao;
 import model.database.access.interfaces.DatabaseAccessObject;
-import model.database.access.interfaces.HasID;
+import model.HasID;
 
 import java.util.List;
 

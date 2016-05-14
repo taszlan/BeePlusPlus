@@ -1,5 +1,6 @@
 package model.database.general;
 
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -20,11 +21,17 @@ import java.util.Random;
 public class DatabaseCreator {
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
     private final static boolean ALWAYS_CLEAR_DATABASE = true;
+    private DatabaseAccessObjectFactory databaseAccessObjectFactory;
+    private JdbcPooledConnectionSource connectionSource;
 
+    public DatabaseCreator(JdbcPooledConnectionSource connectionSource){
+        this.connectionSource = connectionSource;
+        this.databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+    }
 
     public void createDatabase(){
         boolean databaseVersionHasChanged = false;
-        IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
+        IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);
         try {
             DatabaseVersion databaseVersion;
 
@@ -44,7 +51,7 @@ public class DatabaseCreator {
 
                 databaseHelper.createTables();
                 databaseHelper.createDatabaseVersion(new DatabaseVersion(0, 0));
-                DatabaseAccessObject<Storage> storageDao = DatabaseAccessObjectFactory.getInstance().getDAO(Storage.class);
+                DatabaseAccessObject<Storage> storageDao = databaseAccessObjectFactory.getDAO(Storage.class);
                 storageDao.create(new Storage(0,0,0,0,0));
             }
 
@@ -67,11 +74,11 @@ public class DatabaseCreator {
 
     public void fillDatabaseWithExampleDataUsingGenerics(){
         try{
-            IDatabaseHelper databaseHelper = DatabaseHelperSingleton.getDatabaseHelper();
-            DatabaseAccessObject<Queen> queenDao = DatabaseAccessObjectFactory.getInstance().getDAO(Queen.class);
-            DatabaseAccessObject<Apiary> apiaryDao = DatabaseAccessObjectFactory.getInstance().getDAO(Apiary.class);
-            DatabaseAccessObject<Beehive> beehiveDao = DatabaseAccessObjectFactory.getInstance().getDAO(Beehive.class);
-            DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(DatabaseAccessObjectFactory.getInstance().getDAO(Storage.class));
+            IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);
+            DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+            DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+            DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+            DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
             if (DATABASE_LOGGIGNG_ENABLED) System.out.println("----CREATING-SAMPLE-OBJECTS------");
             Random generator = new Random();
 
@@ -125,7 +132,6 @@ public class DatabaseCreator {
 
     public void printLogUsingGenerics(){
         try{
-            DatabaseAccessObjectFactory databaseAccessObjectFactory = DatabaseAccessObjectFactory.getInstance();
             DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
             DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
             DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);

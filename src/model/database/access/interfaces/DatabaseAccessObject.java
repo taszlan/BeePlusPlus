@@ -1,6 +1,7 @@
 package model.database.access.interfaces;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import model.HasID;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface DatabaseAccessObject<T extends HasID> {
     T getWithID(int id);
 
     Dao<T, Integer> getGenericDao();
+
+    JdbcPooledConnectionSource getConnectionSource();
 }

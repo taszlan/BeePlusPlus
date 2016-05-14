@@ -31,12 +31,11 @@ import java.sql.SQLException;
  * Created by atticus on 3/5/16.
  */
 public class Main {
-    public static final boolean GUI_MODE = false;
-    public static final boolean DATABASE_MODE = true;
-    public static final boolean DELETE_EVENTS_FROM_GOOGLE = false;
+    private static Settings settings;
 
     private static JdbcPooledConnectionSource connectionSource;
     public static void main(String args[]){
+        settings = new Settings();
 
         //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
         //calendarQuickstart.runQuickstart();
@@ -51,7 +50,7 @@ public class Main {
 
         googleCalendarHelper.pushEvent(internalEvent);
         googleCalendarHelper.getEvents();
-        if(DELETE_EVENTS_FROM_GOOGLE){
+        if(settings.isDeleteEventsFromGoogle()){
             googleCalendarHelper.deleteAllEvents();
         }
 
@@ -63,7 +62,7 @@ public class Main {
 
         final IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);
 
-        if(DATABASE_MODE) {
+        if(settings.isDatabaseMode()) {
             //Wyłącza logowanie z ORMLite DEBUG/ERROR
             System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
@@ -73,7 +72,7 @@ public class Main {
             //databaseTestingMethod(databaseHelper);
         }
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
-        if(GUI_MODE) {
+        if(settings.isGuiMode()) {
             EventQueue.invokeLater(new Runnable() {
 
                 @Override

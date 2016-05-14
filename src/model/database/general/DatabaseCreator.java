@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public class DatabaseCreator {
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
-    private final static boolean ALWAYS_CLEAR_DATABASE = true;
+    private final static boolean ALWAYS_CLEAR_DATABASE = false;
     private DatabaseAccessObjectFactory databaseAccessObjectFactory;
     private JdbcPooledConnectionSource connectionSource;
 

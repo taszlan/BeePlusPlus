@@ -32,7 +32,7 @@ import java.sql.SQLException;
  */
 public class Main {
     public static final boolean GUI_MODE = false;
-    public static final boolean DATABASE_MODE = false;
+    public static final boolean DATABASE_MODE = true;
     public static final boolean DELETE_EVENTS_FROM_GOOGLE = false;
 
     private static JdbcPooledConnectionSource connectionSource;
@@ -72,11 +72,6 @@ public class Main {
             databaseCreator.printLogUsingGenerics();
             //databaseTestingMethod(databaseHelper);
         }
-
-        DatabaseCreator databaseCreator = new DatabaseCreator(connectionSource);
-        databaseCreator.createDatabase();
-        databaseCreator.printLogUsingGenerics();
-        //databaseTestingMethod(databaseHelper);
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
         if(GUI_MODE) {
             EventQueue.invokeLater(new Runnable() {

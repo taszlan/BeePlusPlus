@@ -25,6 +25,10 @@ public class InternalEvent implements HasID {
     @DatabaseField
     private boolean isSynchronized;
 
+    public InternalEvent(){
+
+    }
+
     public InternalEvent(String summary, String description, DateTime startDate, DateTime endDate, DateTime notificationDate) {
         this.summary = summary;
         this.description = description;

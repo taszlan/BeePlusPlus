@@ -94,7 +94,7 @@ public class DatabaseHelper implements IDatabaseHelper {
             TableUtils.clearTable(connectionSource, Beehive.class);
             TableUtils.clearTable(connectionSource, Storage.class);
             TableUtils.clearTable(connectionSource, Queen.class);
-            TableUtils.createTable(connectionSource, InternalEvent.class);
+            TableUtils.clearTable(connectionSource, InternalEvent.class);
         } catch (SQLException e){
             e.printStackTrace();
         }

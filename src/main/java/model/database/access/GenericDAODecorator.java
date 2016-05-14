@@ -10,20 +10,20 @@ import java.util.List;
 /**
  * Created by atticus on 5/12/16.
  */
-public abstract class GenericDAODecorator implements DatabaseAccessObject{
-    protected DatabaseAccessObject genericDAOToBeDecorated;
+public abstract class GenericDAODecorator<T extends HasID> implements DatabaseAccessObject<T>{
+    protected DatabaseAccessObject<T> genericDAOToBeDecorated;
 
-    public GenericDAODecorator (DatabaseAccessObject genericDAOToBeDecorated){
+    public GenericDAODecorator (DatabaseAccessObject<T> genericDAOToBeDecorated){
         this.genericDAOToBeDecorated = genericDAOToBeDecorated;
     }
 
     @Override
-    public Dao getGenericDao(){
+    public Dao<T,Integer> getGenericDao(){
         return genericDAOToBeDecorated.getGenericDao();
     }
 
     @Override
-    public void create(HasID hasID) {
+    public void create(T hasID) {
         genericDAOToBeDecorated.create(hasID);
     }
 
@@ -33,22 +33,22 @@ public abstract class GenericDAODecorator implements DatabaseAccessObject{
     }
 
     @Override
-    public void update(HasID hasID) {
+    public void update(T hasID) {
         genericDAOToBeDecorated.update(hasID);
     }
 
     @Override
-    public List getAll() {
+    public List<T> getAll() {
         return genericDAOToBeDecorated.getAll();
     }
 
     @Override
-    public void remove(HasID hasID) {
+    public void remove(T hasID) {
         genericDAOToBeDecorated.remove(hasID);
     }
 
     @Override
-    public HasID getWithID(int id) {
+    public T getWithID(int id) {
         return genericDAOToBeDecorated.getWithID(id);
     }
 }

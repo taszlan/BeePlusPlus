@@ -3,6 +3,7 @@ package model.database.general;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import model.*;
@@ -19,14 +20,12 @@ import java.util.List;
 public class DatabaseHelper implements IDatabaseHelper {
 
     private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
-    private ConnectionSource connectionSource;
+    private JdbcPooledConnectionSource connectionSource;
     private Dao<DatabaseVersion, Integer> databaseVersionDao;
 
-    public DatabaseHelper(){
+    public DatabaseHelper(JdbcPooledConnectionSource connectionSource){
         try {
-            String databaseUrl = "jdbc:h2:file:./beeplusplus";
-
-            connectionSource = new JdbcConnectionSource(databaseUrl);
+            this.connectionSource = connectionSource;
             databaseVersionDao= DaoManager.createDao(connectionSource, DatabaseVersion.class);
 
         } catch (Exception e){

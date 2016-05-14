@@ -2,6 +2,7 @@ package model.database.access;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
@@ -16,16 +17,22 @@ import java.util.List;
  * Created by atticus on 5/11/16.
  */
 public class GenericDAO<T extends HasID> implements DatabaseAccessObject<T>{
-    private ConnectionSource connectionSource;
+    private JdbcPooledConnectionSource connectionSource;
     private Dao<T, Integer> genericIntegerDao;
+    private String databaseUrl;
 
-    public GenericDAO(ConnectionSource connectionSource, Class<T> classOfGeneric) {
+    public GenericDAO(JdbcPooledConnectionSource connectionSource, Class<T> classOfGeneric) {
         try {
             this.connectionSource = connectionSource;
             this.genericIntegerDao = DaoManager.createDao(connectionSource, classOfGeneric);
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public JdbcPooledConnectionSource getConnectionSource(){
+        return connectionSource;
     }
 
     @Override

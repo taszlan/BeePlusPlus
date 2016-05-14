@@ -21,10 +21,11 @@ public class DecoratedStorageDAO extends GenericDAODecorator{
     public List<Beehive> getBeehivesFromStorage(){
         List<Beehive> beehiveList = null;
         try {
-            DatabaseAccessObject<Beehive> beehiveIntegerDao = DatabaseAccessObjectFactory.getInstance().getDAO(Beehive.class);
-            QueryBuilder<Beehive, Integer> queryBuilder = beehiveIntegerDao.getGenericDao().queryBuilder();
+            //TODO: wypić 2 kawy, zrobić tak, żęby nie było brzydko
+            DatabaseAccessObject<Beehive> beehiveDao = new DatabaseAccessObjectFactory(genericDAOToBeDecorated.getConnectionSource()).getDAO(Beehive.class);
+            QueryBuilder<Beehive, Integer> queryBuilder = beehiveDao.getGenericDao().queryBuilder();
             PreparedQuery<Beehive> preparedQuery = queryBuilder.where().eq(Beehive.IS_IN_STORAGE, true).prepare();
-            beehiveList = beehiveIntegerDao.getGenericDao().query(preparedQuery);
+            beehiveList = beehiveDao.getGenericDao().query(preparedQuery);
         } catch (SQLException e){
             e.printStackTrace();
         }

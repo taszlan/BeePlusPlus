@@ -1,6 +1,7 @@
 package model.database.access;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.HasID;
 
@@ -24,6 +25,11 @@ public abstract class GenericDAODecorator implements DatabaseAccessObject{
     @Override
     public void create(HasID hasID) {
         genericDAOToBeDecorated.create(hasID);
+    }
+
+    @Override
+    public JdbcPooledConnectionSource getConnectionSource(){
+        return genericDAOToBeDecorated.getConnectionSource();
     }
 
     @Override

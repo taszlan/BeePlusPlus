@@ -2,6 +2,7 @@ package model.database.access;
 
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.Beehive;
 import model.Storage;
 import model.database.access.interfaces.DatabaseAccessObject;
@@ -22,7 +23,12 @@ public class DecoratedStorageDAO extends GenericDAODecorator{
         List<Beehive> beehiveList = null;
         try {
             //TODO: wypić 2 kawy, zrobić tak, żęby nie było brzydko
-            DatabaseAccessObject<Beehive> beehiveDao = new DatabaseAccessObjectFactory(genericDAOToBeDecorated.getConnectionSource()).getDAO(Beehive.class);
+            DatabaseAccessObject<Beehive> beehiveDao = null;
+            try {
+                beehiveDao = new DatabaseAccessObjectFactory(genericDAOToBeDecorated.getConnectionSource()).getDAO(Beehive.class);
+            } catch (FactoryUnableToCreateDaoException e) {
+                e.printStackTrace();
+            }
             QueryBuilder<Beehive, Integer> queryBuilder = beehiveDao.getGenericDao().queryBuilder();
             PreparedQuery<Beehive> preparedQuery = queryBuilder.where().eq(Beehive.IS_IN_STORAGE, true).prepare();
             beehiveList = beehiveDao.getGenericDao().query(preparedQuery);

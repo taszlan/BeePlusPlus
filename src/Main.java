@@ -1,6 +1,7 @@
 
 import com.google.api.services.calendar.model.*;
 import com.j256.ormlite.logger.LocalLog;
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.*;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
@@ -32,10 +33,11 @@ import java.sql.SQLException;
  */
 public class Main {
     private static Settings settings;
-
     private static JdbcPooledConnectionSource connectionSource;
+
     public static void main(String args[]){
-        settings = new Settings();
+
+        initializeGlobalVariables();
 
         //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
         //calendarQuickstart.runQuickstart();
@@ -48,16 +50,19 @@ public class Main {
                 new DateTime().plusDays(1).plusHours(2),
                 new DateTime());
 
+        DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+        DatabaseAccessObject<InternalEvent> internalEventDao = null;
+        try {
+            internalEventDao = databaseAccessObjectFactory.getDAO(InternalEvent.class);
+        } catch (FactoryUnableToCreateDaoException e){
+            e.printStackTrace();
+        }
+        internalEventDao.create(internalEvent);
+        System.out.println(internalEventDao.getAll().get(0));
         googleCalendarHelper.pushEvent(internalEvent);
         googleCalendarHelper.getEvents();
         if(settings.isDeleteEventsFromGoogle()){
             googleCalendarHelper.deleteAllEvents();
-        }
-
-        try{
-            connectionSource = new JdbcPooledConnectionSource(new Settings().getDatabaseUrl());
-        } catch (SQLException e){
-            e.printStackTrace();
         }
 
         final IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);
@@ -93,14 +98,33 @@ public class Main {
         });
     }
 
+    private static void initializeGlobalVariables(){
+        settings = new Settings();
+
+        try{
+            connectionSource = new JdbcPooledConnectionSource(new Settings().getDatabaseUrl());
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
     public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
         DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-
-        DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
-        DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
-        DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
-        DecoratedBeehiveDAO decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
-        DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        DatabaseAccessObject<Apiary> apiaryDao = null;
+        DatabaseAccessObject<Beehive> beehiveDao = null;
+        DecoratedBeehiveDAO decoratedBeehiveDAO = null;
+        DatabaseAccessObject<Queen> queenDao;
+        DecoratedStorageDAO decoratedStorageDao;
+        try {
+            queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+            apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+            beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+            decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
+            decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        } catch (FactoryUnableToCreateDaoException e) {
+            e.printStackTrace();
+        }
 
         //Testowanie zapytań do bazy danych
         System.out.println("-------AFTER-ADDING-NEW-APIARY---------");

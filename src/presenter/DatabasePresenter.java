@@ -1,6 +1,7 @@
 package presenter;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -31,13 +32,17 @@ public abstract class DatabasePresenter {
     JdbcPooledConnectionSource connectionSource;
 
     public DatabasePresenter(JdbcPooledConnectionSource connectionSource){
-        databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-        apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
-        beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
-        queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
-        decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
-        decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
-        this.connectionSource = connectionSource;
+        try {
+            databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+            apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+            beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+            queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+            decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
+            decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+            this.connectionSource = connectionSource;
+        } catch (FactoryUnableToCreateDaoException e) {
+            e.printStackTrace();
+        }
     }
 
     //Konstruktory na sterydach - tworzą nowe obiekty oraz dodają je do bazy danych.

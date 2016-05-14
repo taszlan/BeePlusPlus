@@ -1,5 +1,6 @@
 
 import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.model.Event;
 import com.j256.ormlite.logger.LocalLog;
 import general.exceptions.FactoryUnableToCreateDaoException;
 import model.*;
@@ -20,13 +21,16 @@ import model.database.general.DatabaseHelper;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.database.general.interfaces.IDatabaseHelper;
 import org.joda.time.DateTime;
+import presenter.EventPresenter;
 import presenter.SimpleGUIPresenter;
 import presenter.utilities.CalendarQuickstart;
+import presenter.utilities.CalendarThread;
 import presenter.utilities.GoogleCalendarHelper;
 import view.SimpleGIUMainView;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by atticus on 3/5/16.
@@ -38,31 +42,42 @@ public class Main {
     public static void main(String args[]){
 
         initializeGlobalVariables();
+        LinkedBlockingQueue<InternalEvent> queue = new LinkedBlockingQueue<>();
+        DatabaseAccessObject<InternalEvent> internalEventDatabaseAccessObject;
+        CalendarThread calendarThread = null;
+        if(settings.isgCalMode()){
+            try {
+                internalEventDatabaseAccessObject = new DatabaseAccessObjectFactory(connectionSource).getDAO(InternalEvent.class);
+                calendarThread = new CalendarThread(queue, internalEventDatabaseAccessObject);
+                calendarThread.start();
+                //EventPresenter eventPresenter = new EventPresenter(connectionSource);
+                //eventPresenter.testEventPresenter();
+            } catch (FactoryUnableToCreateDaoException e) {
+                e.printStackTrace();
+            }
 
-        //CalendarQuickstart calendarQuickstart = new CalendarQuickstart();
-        //calendarQuickstart.runQuickstart();
-        GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
-        //googleCalendarHelper.pushTestEvent();
+            try {
+                queue.put(new InternalEvent("Dodawanie obiektów",
+                        "Prosty test dodawania obiektów",
+                        new DateTime().plusDays(1),
+                        new DateTime().plusDays(1).plusHours(2),
+                        new DateTime()));
 
-        InternalEvent internalEvent = new InternalEvent("Dodawanie obiektów",
-                "Prosty test dodawania obiektów",
-                new DateTime().plusDays(1),
-                new DateTime().plusDays(1).plusHours(2),
-                new DateTime());
+                queue.put(new InternalEvent("Inne dodawanie obiektów",
+                        "Prosty test dodawania obiektów",
+                        new DateTime().plusDays(2),
+                        new DateTime().plusDays(2).plusHours(2),
+                        new DateTime().plusDays(1)));
 
-        DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-        DatabaseAccessObject<InternalEvent> internalEventDao = null;
-        try {
-            internalEventDao = databaseAccessObjectFactory.getDAO(InternalEvent.class);
-        } catch (FactoryUnableToCreateDaoException e){
-            e.printStackTrace();
-        }
-        internalEventDao.create(internalEvent);
-        System.out.println(internalEventDao.getAll().get(0));
-        googleCalendarHelper.pushEvent(internalEvent);
-        googleCalendarHelper.getEvents();
-        if(settings.isDeleteEventsFromGoogle()){
-            googleCalendarHelper.deleteAllEvents();
+                queue.put(new InternalEvent(true));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(settings.isDeleteEventsFromGoogle()){
+                GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
+                googleCalendarHelper.getEvents();
+                googleCalendarHelper.deleteAllEvents();
+            }
         }
 
         final IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);

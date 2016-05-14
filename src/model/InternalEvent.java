@@ -1,6 +1,7 @@
 package model;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.query.In;
 import org.joda.time.DateTime;
 
 /**
@@ -24,6 +25,11 @@ public class InternalEvent implements HasID {
     private DateTime notificationDate;
     @DatabaseField
     private boolean isSynchronized;
+    private boolean endThread;
+
+    public InternalEvent(boolean endThread){
+        this.endThread = endThread;
+    }
 
     public InternalEvent(){
 
@@ -35,6 +41,10 @@ public class InternalEvent implements HasID {
         this.startDate = startDate;
         this.endDate = endDate;
         this.notificationDate = notificationDate;
+    }
+
+    public boolean isEndThread() {
+        return endThread;
     }
 
     public int getInternalId() {

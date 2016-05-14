@@ -1,11 +1,9 @@
 package presenter;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import general.Settings;
 import general.exceptions.FactoryUnableToCreateDaoException;
-import model.Apiary;
-import model.Beehive;
-import model.Queen;
-import model.Storage;
+import model.*;
 import model.database.access.DatabaseAccessObjectFactory;
 import model.database.access.DecoratedBeehiveDAO;
 import model.database.access.DecoratedStorageDAO;
@@ -22,6 +20,7 @@ public abstract class DatabasePresenter {
     DatabaseAccessObject<Apiary> apiaryDao;
     DatabaseAccessObject<Beehive> beehiveDao;
     DatabaseAccessObject<Queen> queenDao;
+    DatabaseAccessObject<InternalEvent> internalEventDao;
     DecoratedBeehiveDAO decoratedBeehiveDao;
     DecoratedStorageDAO decoratedStorageDao;
 
@@ -30,15 +29,18 @@ public abstract class DatabasePresenter {
     }
 
     JdbcPooledConnectionSource connectionSource;
+    Settings settings;
 
     public DatabasePresenter(JdbcPooledConnectionSource connectionSource){
         try {
+            settings = new Settings();
             databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
             apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
             beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
             queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
             decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
             decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+            internalEventDao = databaseAccessObjectFactory.getDAO(InternalEvent.class);
             this.connectionSource = connectionSource;
         } catch (FactoryUnableToCreateDaoException e) {
             e.printStackTrace();

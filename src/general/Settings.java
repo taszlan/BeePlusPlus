@@ -11,9 +11,14 @@ public class Settings {
     String databaseUrl = "jdbc:h2:file:./beeplusplus;MULTI_THREADED=TRUE";
     boolean guiMode = false;
     boolean databaseMode = true;
+    boolean gCalMode = true;
     boolean deleteEventsFromGoogle = false;
-    boolean alwaysClearDatabase = true;
+    boolean alwaysClearDatabase = false;
     boolean databaseLoggingEnabled = true;
+
+    public boolean isgCalMode() {
+        return gCalMode;
+    }
 
     public boolean isGuiMode() {
         return guiMode;

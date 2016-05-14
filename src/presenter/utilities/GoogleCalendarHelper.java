@@ -34,6 +34,46 @@ public class GoogleCalendarHelper {
         }
     }
 
+    public Event pushEventAndReturnResponse(InternalEvent internalEvent) throws IOException{
+        Event googleEvent = new Event()
+                .setSummary(internalEvent.getSummary())
+                .setDescription(internalEvent.getDescription());
+
+        DateTime startDateTime = new DateTime(internalEvent.getStartDate().toDate());
+        EventDateTime start = new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("Europe/Warsaw");
+
+        googleEvent.setStart(start);
+
+        DateTime endDateTime = new DateTime(internalEvent.getEndDate().toDate());
+        EventDateTime end = new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("Europe/Warsaw");
+        googleEvent.setEnd(end);
+
+        List<String> listOfEmails = settings.getListOfEmails();
+        List<EventAttendee> listOfAttendees = new ArrayList<>();
+        for(String s : listOfEmails){
+            listOfAttendees.add(new EventAttendee().setEmail(s));
+        }
+        googleEvent.setAttendees(listOfAttendees);
+
+        EventReminder[] reminderOverrides = new EventReminder[]{
+                new EventReminder().setMethod("email").setMinutes(Minutes.minutesBetween(internalEvent.getNotificationDate(), internalEvent.getStartDate()).getMinutes()),
+        };
+
+        Event.Reminders reminders = new Event.Reminders()
+                .setUseDefault(false)
+                .setOverrides(Arrays.asList(reminderOverrides));
+
+        googleEvent.setReminders(reminders);
+
+        String calendarId = "primary";
+
+        return service.events().insert(calendarId, googleEvent).execute();
+    }
+
     public void pushEvent(InternalEvent internalEvent){
         Event googleEvent = new Event()
                 .setSummary(internalEvent.getSummary())

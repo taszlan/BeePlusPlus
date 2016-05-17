@@ -23,7 +23,7 @@ import java.sql.SQLException;
  * Created by atticus on 3/5/16.
  */
 public class Main {
-    public static final boolean GUI_MODE = false;
+    public static final boolean GUI_MODE = true;
     private static JdbcPooledConnectionSource connectionSource;
     public static void main(String args[]){
         //Wyłącza logowanie z ORMLite DEBUG/ERROR

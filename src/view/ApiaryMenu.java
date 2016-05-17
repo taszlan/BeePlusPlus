@@ -50,7 +50,7 @@ public void display(Apiary apiaryName){
 			}
 			
 			System.out.println(String.valueOf(index++)+"Dodaj Ul");
-			System.out.println(String.valueOf(index++)+"Powrót do pasiek");
+			System.out.println(String.valueOf(index++)+"Powrï¿½t do pasiek");
 			
 			int selection = input.nextInt();
 			
@@ -68,7 +68,7 @@ public void display(Apiary apiaryName){
 			  		if(selection == listOfApiaryBeehives.size()+2 ){ 
 			  			
 			  			ApiariesMenu apiariesMenu = new ApiariesMenu();
-						apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
 						apiariesMenu.display();
 						break;
 						
@@ -90,7 +90,7 @@ public void display(Apiary apiaryName){
 			  			simpleGUIPresenter.newBeehive(apiaryID, beehiveWeight ,beehiveX, beehiveY);
 			  			
 			  			ApiaryMenu apiaryMenu = new ApiaryMenu();
-						apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
 						apiaryMenu.display(apiaryName);
 						
 						break;
@@ -100,7 +100,7 @@ public void display(Apiary apiaryName){
 					if(selection == j){
 																								
 			  			BeehiveOptions beehiveOptions = new BeehiveOptions();
-						beehiveOptions.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						beehiveOptions.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
 						beehiveOptions.display(beehiveForMenu.getDatabaseId());
 						break;
 						

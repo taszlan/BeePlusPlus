@@ -61,7 +61,7 @@ public class ApiariesMenu {
 		  	
 		  		if(selection == listOfApiaries.size()+1 ){ 
 		  			
-		  			System.out.println("Podaj Nazwêpasieki");
+		  			System.out.println("Podaj Nazwï¿½pasieki");
 		  			String apiaryName = newApiaryInput.nextLine();
 		  			
 		  			newApiaryInput.hasNextLine();
@@ -75,7 +75,7 @@ public class ApiariesMenu {
 		  			newApiaryInput.hasNextLine();
 		  			simpleGUIPresenter.newApiary(apiaryName, apiaryX, apiaryY);
 		  			ApiariesMenu apiariesMenu = new ApiariesMenu();
-					apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+					apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
 					apiariesMenu.display();
 					break;
 		  			
@@ -85,7 +85,7 @@ public class ApiariesMenu {
 					
 					
 					ApiaryMenu apiaryMenu = new ApiaryMenu();
-					apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+					apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
 					apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(apiaryForMenu.getApiaryID()));
 					
 					

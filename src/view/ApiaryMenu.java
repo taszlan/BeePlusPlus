@@ -12,9 +12,13 @@ import java.util.ArrayList;
 public class ApiaryMenu {
 	
 	private List<Beehive> listOfApiaryBeehives;
+	private List<Beehive> listOfBeehives;
 	private List<Apiary> listOfApiaries;
 	private SimpleGUIPresenter simpleGUIPresenter;
+	private Scanner input = new Scanner(System.in);
+	private Scanner newBeehiveInput = new Scanner(System.in);
 	
+	private int index;
 	private int apiaryIDTest;
 	private int temp;
 	private int test;
@@ -30,51 +34,100 @@ public class ApiaryMenu {
 	        return simpleGUIPresenter;
 	    }
 
-//	private Scanner input = new Scanner(System.in);
+
 	
 public void display(Apiary apiaryName){
-	
-
-	//	Apiary apiaryTest = new Apiary();
-	//	apiaryTest = apiaryName;
-		System.out.println(apiaryName);
-	//	System.out.println(apiaryTest);
-	
-	
-		listOfApiaryBeehives = simpleGUIPresenter.getBeehivesFromApiary(apiaryName);
-				
+		
+			listOfApiaryBeehives = simpleGUIPresenter.getBeehivesFromApiary(apiaryName);
 		
 		
 
-	for(Beehive b : listOfApiaryBeehives){
 			
-	System.out.println(b);
-	}
+			index = 1;
+			for(Beehive a : listOfApiaryBeehives){
+				
+				System.out.println(String.valueOf(index++)+" Ul NR "+a.getDatabaseId());
+			}
+			
+			System.out.println(String.valueOf(index++)+"Dodaj Ul");
+			System.out.println(String.valueOf(index++)+"Powrót do pasiek");
+			
+			int selection = input.nextInt();
+			
+			input.hasNextLine();
+		
+			
+			for (int i = 0; i < listOfApiaryBeehives.size(); i++) {
+			 	
+			 		Beehive beehiveForMenu = new Beehive();
+			 		beehiveForMenu = listOfApiaryBeehives.get(i);
+			
+			  		int j  	;
+			  		j = 1+i;
+			  		
+			  		if(selection == listOfApiaryBeehives.size()+2 ){ 
+			  			
+			  			ApiariesMenu apiariesMenu = new ApiariesMenu();
+						apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						apiariesMenu.display();
+						break;
+						
+					
+			  			
+			  		}
+		
+			  	
+			  		if(selection == listOfApiaryBeehives.size()+1 ){ 
+			  			
+			  			int apiaryID = apiaryName.getApiaryID();
+			  			double beehiveWeight = 10;
+			  			System.out.println("Podaj X Ula");
+			  			int beehiveX = newBeehiveInput.nextInt();
+			  			
+			  			System.out.println("Podaj Y Ula");
+			  			int beehiveY = newBeehiveInput.nextInt();
+			  			
+			  			simpleGUIPresenter.newBeehive(apiaryID, beehiveWeight ,beehiveX, beehiveY);
+			  			
+			  			ApiaryMenu apiaryMenu = new ApiaryMenu();
+						apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						apiaryMenu.display(apiaryName);
+						
+						break;
+			  			
+			  		}
+		
+					if(selection == j){
+																								
+			  			BeehiveOptions beehiveOptions = new BeehiveOptions();
+						beehiveOptions.setSimpleGUIPresenter(new SimpleGUIPresenter());
+						beehiveOptions.display(beehiveForMenu.getDatabaseId());
+						break;
+						
+						
+			
+						
+						}
+						j++;
+						
+			}
+}
+					
+						
+					
+					
+		
+		
+			
+		
+		
+
 	
-	}
 	
 	
 
 		
-	//	int selection = input.nextInt();
-		
-	//	input.hasNextLine();
-	
-		
-	//	for (int i = 0; i < listOfApiaries.size(); i++) {
-	//	 		Apiary element = listOfApiaries.get(i);
-		
-	//	  		int j  	;
-	//	  		j = 1+i;
-	
-	//			if(selection == j){
-	//				ApiaryMenu apiaryMenu = new ApiaryMenu();
-	//				apiaryMenu.display(element.getApiaryName());
-		
-	//				break;
-	//				}
-	//				j++;
-	
+
 	
 			
 

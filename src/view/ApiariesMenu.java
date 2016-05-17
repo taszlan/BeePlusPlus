@@ -11,10 +11,13 @@ import java.util.ArrayList;
 public class ApiariesMenu {
 	
 	private Scanner input = new Scanner(System.in);
+	private Scanner newApiaryInput = new Scanner(System.in);
 	
 	private List<Apiary> listOfApiaries;
 	
 	private SimpleGUIPresenter simpleGUIPresenter;
+	
+	private int index ;
 
 	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
 		this.simpleGUIPresenter = simpleGUIPresenter;
@@ -32,13 +35,16 @@ public class ApiariesMenu {
 		
 		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
 		
-
-		for(Apiary a : listOfApiaries){
-			
-			System.out.println(a.getApiaryName());
-		}
 		
 
+		
+		index = 1;
+		for(Apiary a : listOfApiaries){
+			
+			System.out.println(String.valueOf(index++)+a.getApiaryName());
+		}
+		
+		System.out.println(String.valueOf(index++)+"Dodaj Pasieke");
 		
 		int selection = input.nextInt();
 		
@@ -46,26 +52,51 @@ public class ApiariesMenu {
 	
 		
 		for (int i = 0; i < listOfApiaries.size(); i++) {
-		 		Apiary element = new Apiary();
+		 		Apiary apiaryForMenu = new Apiary();
 		 		
-		 		element = listOfApiaries.get(i);
+		 		apiaryForMenu = listOfApiaries.get(i);
 		
 		  		int j  	;
 		  		j = 1+i;
-		  		
-		  		System.out.println("apitest id 1 ,"+element.getApiaryID());
+		  	
+		  		if(selection == listOfApiaries.size()+1 ){ 
+		  			
+		  			System.out.println("Podaj Nazwêpasieki");
+		  			String apiaryName = newApiaryInput.nextLine();
+		  			
+		  			newApiaryInput.hasNextLine();
+		  	
+		 
+		  			System.out.println("Podaj X pasieki");
+		  			int apiaryX = newApiaryInput.nextInt();
+		  			input.hasNextLine();
+		  			System.out.println("Podaj Y pasieki");
+		  			int apiaryY = newApiaryInput.nextInt();
+		  			newApiaryInput.hasNextLine();
+		  			simpleGUIPresenter.newApiary(apiaryName, apiaryX, apiaryY);
+		  			ApiariesMenu apiariesMenu = new ApiariesMenu();
+					apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+					apiariesMenu.display();
+					break;
+		  			
+		  		}
 	
 				if(selection == j){
-					ApiaryMenu apiaryMenu = new ApiaryMenu();
-					System.out.println("apiiary id 2 ,"+element.getApiaryID());
 					
-					apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(element.getApiaryID()));
+					
+					ApiaryMenu apiaryMenu = new ApiaryMenu();
+					apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter());
+					apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(apiaryForMenu.getApiaryID()));
 					
 					
 		
 					break;
 					}
 					j++;
+				
+					
+				
+				
 	
 	
 		}	

@@ -27,9 +27,7 @@ public class SimpleGIUMainView {
 	        return simpleGUIPresenter;
 	    }
 
-//	    public void setSimpleGuiPresenter(SimpleGUIPresenter simpleGuiPresenter) {
-//	        this.simpleGUIPresenter = simpleGUIPresenter;
-//	    }
+
 	    
 	    private Scanner input = new Scanner(System.in);
 	    public void display(){
@@ -52,7 +50,9 @@ public class SimpleGIUMainView {
 			apiariesMenu.display();
 			break;
 		case 2:
-			this.openMagazynMenu();
+			StorageMenu storageMenu = new StorageMenu();
+			storageMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+			storageMenu.display();
 			break;
 		case 3:
 			this.exit();
@@ -72,29 +72,6 @@ public class SimpleGIUMainView {
 			System.out.println("will get Magazyn menu here");
 		}
 		
-//	 public void showMenu(){
-//		 listOfApiaries = simpleGUIPresenter.getApiaryList() ;
-		
-		 
-//
-//		 for(Apiary a : listOfApiaries){
-//			 System.out.println(a.getApiaryName());
-			 
-//
-//		 for(Apiary a : listOfApiaries){
-//			 System.out.println(a.getApiaryName());
 
-//
-			
-//			 for( Beehive b : a.getListOfBehives()){
-//				 System.out.println(b.getId()); 
-				 
-//			 }
-			 
-			
-//		 }
-		 
-		 
-//	 }
 	 
 }

@@ -40,7 +40,8 @@ public void display(Apiary apiaryName){
 		
 			listOfApiaryBeehives = simpleGUIPresenter.getBeehivesFromApiary(apiaryName);
 		
-		
+			System.out.println("Pasieka "+ apiaryName.getApiaryName());
+			System.out.println(" ---------------- ");
 
 			
 			index = 1;

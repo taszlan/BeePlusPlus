@@ -45,10 +45,11 @@ public class ApiariesMenu {
 		}
 		
 		System.out.println(String.valueOf(index++)+"Dodaj Pasieke");
+		System.out.println(String.valueOf(index++)+"Powrott do glownego Menu");
 		
 		int selection = input.nextInt();
 		
-		input.hasNextLine();
+		
 	
 		
 		for (int i = 0; i < listOfApiaries.size(); i++) {
@@ -64,7 +65,7 @@ public class ApiariesMenu {
 		  			System.out.println("Podaj Nazw�pasieki");
 		  			String apiaryName = newApiaryInput.nextLine();
 		  			
-		  			newApiaryInput.hasNextLine();
+
 		  	
 		 
 		  			System.out.println("Podaj X pasieki");
@@ -80,9 +81,18 @@ public class ApiariesMenu {
 					break;
 		  			
 		  		}
+		  		
+		  		if(selection == listOfApiaries.size()+2 ){
+		  			SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
+                    simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+                    simpleGUIMain.display();
+				break;
+		  		}
 	
 				if(selection == j){
-					
+													 		
+			 		apiaryForMenu = listOfApiaries.get(i);
+			
 					
 					ApiaryMenu apiaryMenu = new ApiaryMenu();
 					apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));

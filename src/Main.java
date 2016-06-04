@@ -13,7 +13,7 @@ import model.database.general.DatabaseHelper;
 //import model.database.general.DatabaseHelperSingleton;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.database.general.interfaces.IDatabaseHelper;
-import presenter.SimpleGUIPresenter;
+import presenter.ApiaryPresenter;
 import view.SimpleGIUMainView;
 
 import java.awt.*;
@@ -47,8 +47,11 @@ public class Main {
 
                 @Override
                 public void run() {
+                	
+                	
+                	
                     SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
-                    simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter(connectionSource));
+                    simpleGUIMain.setApiaryPresenter(new ApiaryPresenter(connectionSource));
                     simpleGUIMain.display();
                 }
             });
@@ -61,39 +64,39 @@ public class Main {
                 databaseHelper.closeConnection();
             }
         });
-    }
+   // }
 
-    public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
-        DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+  //  public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
+ //       DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
 
-        DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
-        DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
-        DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
-        DecoratedBeehiveDAO decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
-        DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+ //       DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+ //       DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+  //      DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+  //      DecoratedBeehiveDAO decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
+  //      DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
 
         //Testowanie zapytań do bazy danych
-        System.out.println("-------AFTER-ADDING-NEW-APIARY---------");
-        apiaryDao.create(new Apiary("Testowa pasieka", 10, 10));
+  //      System.out.println("-------AFTER-ADDING-NEW-APIARY---------");
+   //     apiaryDao.create(new Apiary("Testowa pasieka", 10, 10));
 
-        for(Apiary a : apiaryDao.getAll()){
-            System.out.println(a);
-        }
+   //     for(Apiary a : apiaryDao.getAll()){
+   //         System.out.println(a);
+   //     }
 
-        System.out.println("--------BEFORE-UPDATING-BEEHIVE---------");
-        for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
-            System.out.println(beehive);
-        }
+  //      System.out.println("--------BEFORE-UPDATING-BEEHIVE---------");
+  //     for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
+  //         System.out.println(beehive);
+  //      }
 
-        Beehive beehive1 = decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0)).get(0);
-        beehive1.setInStorage(true);
-        beehiveDao.update(beehive1);
+  //      Beehive beehive1 = decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0)).get(0);
+  //      beehive1.setInStorage(true);
+   //     beehiveDao.update(beehive1);
 
-        System.out.println("--------AFTER-UPDATING-BEEHIVE---------");
+    //    System.out.println("--------AFTER-UPDATING-BEEHIVE---------");
 
-        for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
-            System.out.println(beehive);
-        }
+    //    for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
+    //        System.out.println(beehive);
+     //   }
 
     }
 }

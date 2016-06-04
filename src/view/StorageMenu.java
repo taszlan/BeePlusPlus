@@ -1,5 +1,6 @@
 package view;
-import presenter.SimpleGUIPresenter;
+import presenter.ApiaryPresenter;
+import presenter.StoragePresenter;
 import java.util.Scanner;
 import java.util.List;
 
@@ -18,17 +19,17 @@ public class StorageMenu {
 			private List<Beehive> listOfApiariesInStorage;
 			private Storage  storage;
 			
-			private SimpleGUIPresenter simpleGUIPresenter;
+			private StoragePresenter storagePresenter;
 			
 
 
 
-			public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
-						this.simpleGUIPresenter = simpleGUIPresenter;
+			public void setStoragePresenter(StoragePresenter storagePresenter) {
+						this.storagePresenter = storagePresenter;
 						}
 
-			public SimpleGUIPresenter getSimpleGuiPresenter() {
-					return simpleGUIPresenter;
+			public StoragePresenter getSimpleGuiPresenter() {
+					return storagePresenter;
 					}
 
 
@@ -37,8 +38,8 @@ public class StorageMenu {
 
 public void display(){
 			
-		storage = simpleGUIPresenter.getStorage();
-		listOfApiariesInStorage = simpleGUIPresenter.getBeehivesFromStorage();
+		storage = storagePresenter.getStorage();
+		listOfApiariesInStorage = storagePresenter.getBeehivesFromStorage();
 				
 		
 				System.out.println(
@@ -66,8 +67,9 @@ public void display(){
 			
 		case 5:
 			SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
-            simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+            simpleGUIMain.setApiaryPresenter(new ApiaryPresenter(storagePresenter.getConnectionSource()));
             simpleGUIMain.display();
+            break;
 		case 6:
 			this.exit();
 			break;

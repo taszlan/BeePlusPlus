@@ -1,12 +1,14 @@
 package view;
-import presenter.SimpleGUIPresenter;
+import presenter.ApiaryPresenter;
+import presenter.BeehivePresenter;
+
 import java.util.Scanner;
 import java.util.List;
 
 import model.Apiary;
-import model.Beehive;
 
-import java.util.ArrayList;
+
+
 
 public class ApiariesMenu {
 	
@@ -15,16 +17,16 @@ public class ApiariesMenu {
 	
 	private List<Apiary> listOfApiaries;
 	
-	private SimpleGUIPresenter simpleGUIPresenter;
-	
+	private ApiaryPresenter apiaryPresenter;
+	private BeehivePresenter beehivePresenter;
 	private int index ;
 
-	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
-		this.simpleGUIPresenter = simpleGUIPresenter;
+	public void setApiaryPresenter(ApiaryPresenter apiaryPresenter) {
+		this.apiaryPresenter = apiaryPresenter;
 	}
 	
-	public SimpleGUIPresenter getSimpleGuiPresenter() {
-	        return simpleGUIPresenter;
+	public ApiaryPresenter getApiaryiPresenter() {
+	        return apiaryPresenter;
 	    }
 	
     
@@ -33,7 +35,9 @@ public class ApiariesMenu {
 	
 	public void display(){
 		
-		listOfApiaries = simpleGUIPresenter.getApiaryList() ;
+		listOfApiaries = apiaryPresenter.getApiaryList() ;
+		
+		
 		
 		
 
@@ -74,9 +78,9 @@ public class ApiariesMenu {
 		  			System.out.println("Podaj Y pasieki");
 		  			int apiaryY = newApiaryInput.nextInt();
 		  			newApiaryInput.hasNextLine();
-		  			simpleGUIPresenter.newApiary(apiaryName, apiaryX, apiaryY);
+		  			apiaryPresenter.newApiary(apiaryName, apiaryX, apiaryY);
 		  			ApiariesMenu apiariesMenu = new ApiariesMenu();
-					apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+					apiariesMenu.setApiaryPresenter(new ApiaryPresenter(apiaryPresenter.getConnectionSource()));
 					apiariesMenu.display();
 					break;
 		  			
@@ -84,7 +88,7 @@ public class ApiariesMenu {
 		  		
 		  		if(selection == listOfApiaries.size()+2 ){
 		  			SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
-                    simpleGUIMain.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+                    simpleGUIMain.setApiaryPresenter(new ApiaryPresenter(apiaryPresenter.getConnectionSource()));
                     simpleGUIMain.display();
 				break;
 		  		}
@@ -94,14 +98,14 @@ public class ApiariesMenu {
 			 		apiaryForMenu = listOfApiaries.get(i);
 			
 					
-					ApiaryMenu apiaryMenu = new ApiaryMenu();
-					apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
-					apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(apiaryForMenu.getApiaryID()));
+				ApiaryMenu apiaryMenu = new ApiaryMenu();
+				apiaryMenu.setBeehivePresenter(new BeehivePresenter(apiaryPresenter.getConnectionSource()));
+				apiaryMenu.display(apiaryPresenter.getApiaryWithID(apiaryForMenu.getApiaryID()));
 					
 					
 		
 					break;
-					}
+				}
 					j++;
 				
 					

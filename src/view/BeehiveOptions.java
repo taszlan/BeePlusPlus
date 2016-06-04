@@ -1,6 +1,7 @@
 package view;
 
-import presenter.SimpleGUIPresenter;
+import presenter.ApiaryPresenter;
+import presenter.BeehivePresenter;
 import java.util.Scanner;
 import java.util.List;
 
@@ -11,21 +12,31 @@ import java.util.ArrayList;
 
 public class BeehiveOptions {
 	
-	private SimpleGUIPresenter simpleGUIPresenter;
+	private BeehivePresenter beehivePresenter;
+	private ApiaryPresenter apiaryPresenter;
 	private Beehive behiveForDetails;
 	
+	
 
-	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
-		this.simpleGUIPresenter = simpleGUIPresenter;
+	public void setBeehivePresenter(BeehivePresenter beehivePresenter) {
+		this.beehivePresenter = beehivePresenter;
 	}
 	
-	public SimpleGUIPresenter getSimpleGuiPresenter() {
-	        return simpleGUIPresenter;
+	public BeehivePresenter getSimpleGuiPresenter() {
+	        return beehivePresenter;
+	    }
+	
+	public void setApiaryPresenter(ApiaryPresenter apiaryPresenter) {
+		this.apiaryPresenter = apiaryPresenter;
+	}
+	
+	public ApiaryPresenter getApiaryiPresenter() {
+	        return apiaryPresenter;
 	    }
 	
 	public void display(int beehiveID){
 		
-		behiveForDetails = simpleGUIPresenter.getBeehiveWithID(beehiveID);
+		behiveForDetails = beehivePresenter.getBeehiveWithID(beehiveID);
 		System.out.println("Ul printout");
 		System.out.println(behiveForDetails);
 		System.out.println(
@@ -40,9 +51,8 @@ public class BeehiveOptions {
 	
 
 		ApiaryMenu apiaryMenu = new ApiaryMenu();
-		apiaryMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
-		apiaryMenu.display(simpleGUIPresenter.getApiaryWithID(behiveForDetails.getApiaryId()));
-		
+		apiaryMenu.setBeehivePresenter(new BeehivePresenter(beehivePresenter.getConnectionSource()));
+		apiaryMenu.display(apiaryPresenter.getApiaryWithID(behiveForDetails.getApiaryId()));
 	
 	}
 	

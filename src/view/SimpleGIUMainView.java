@@ -1,6 +1,8 @@
 package view;
 
-import presenter.SimpleGUIPresenter;
+import presenter.ApiaryPresenter;
+import presenter.StoragePresenter;
+
 import java.util.Scanner;
 import java.util.List;
 
@@ -17,15 +19,25 @@ public class SimpleGIUMainView {
 
 
 	private List<Apiary> listOfApiaries;
-	private SimpleGUIPresenter simpleGUIPresenter;
+	private ApiaryPresenter apiaryPresenter;
+	private StoragePresenter storagePresenter;
 
-	public void setSimpleGUIPresenter(SimpleGUIPresenter simpleGUIPresenter) {
-		this.simpleGUIPresenter = simpleGUIPresenter;
+	public void setApiaryPresenter(ApiaryPresenter apiaryPresenter) {
+		this.apiaryPresenter = apiaryPresenter;
 	}
 	
-	public SimpleGUIPresenter getSimpleGuiPresenter() {
-	        return simpleGUIPresenter;
+	public ApiaryPresenter getApiaryPresenter() {
+	        return apiaryPresenter;
 	    }
+	
+	public void setStoragePresenter(StoragePresenter storagePresenter) {
+		this.storagePresenter = storagePresenter;
+		}
+
+	public StoragePresenter getStoragePresenter() {
+	return storagePresenter;
+	}
+	
 
 
 	    
@@ -45,13 +57,13 @@ public class SimpleGIUMainView {
 		switch (selection){
 		
 		case 1:
-			ApiariesMenu apiariesMenu = new ApiariesMenu();
-			apiariesMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+			ApiariesMenu apiariesMenu = new ApiariesMenu();			
+			apiariesMenu.setApiaryPresenter(new ApiaryPresenter(apiaryPresenter.getConnectionSource()));
 			apiariesMenu.display();
 			break;
 		case 2:
 			StorageMenu storageMenu = new StorageMenu();
-			storageMenu.setSimpleGUIPresenter(new SimpleGUIPresenter(simpleGUIPresenter.getConnectionSource()));
+			storageMenu.setStoragePresenter(new StoragePresenter(apiaryPresenter.getConnectionSource()));
 			storageMenu.display();
 			break;
 		case 3:

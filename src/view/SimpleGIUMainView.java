@@ -59,6 +59,7 @@ public class SimpleGIUMainView {
 		case 1:
 			ApiariesMenu apiariesMenu = new ApiariesMenu();			
 			apiariesMenu.setApiaryPresenter(new ApiaryPresenter(apiaryPresenter.getConnectionSource()));
+
 			apiariesMenu.display();
 			break;
 		case 2:

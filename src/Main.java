@@ -1,3 +1,9 @@
+
+import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.model.Event;
+import com.j256.ormlite.logger.LocalLog;
+import general.exceptions.FactoryUnableToCreateDaoException;
+import model.*;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.logger.LocalLog;
 import general.Settings;
@@ -14,44 +20,87 @@ import model.database.general.DatabaseHelper;
 import model.database.access.interfaces.DatabaseAccessObject;
 import model.database.general.interfaces.IDatabaseHelper;
 import presenter.ApiaryPresenter;
+import org.joda.time.DateTime;
+import presenter.EventPresenter;
+import presenter.SimpleGUIPresenter;
+import presenter.utilities.CalendarQuickstart;
+import presenter.utilities.CalendarThread;
+import presenter.utilities.GoogleCalendarHelper;
 import view.SimpleGIUMainView;
-
 import java.awt.*;
 import java.sql.SQLException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by atticus on 3/5/16.
  */
 public class Main {
-    public static final boolean GUI_MODE = true;
+
+    private static Settings settings;
     private static JdbcPooledConnectionSource connectionSource;
     public static void main(String args[]){
-        //Wyłącza logowanie z ORMLite DEBUG/ERROR
-        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 
-        try{
-            connectionSource = new JdbcPooledConnectionSource(new Settings().getDatabaseUrl());
-        } catch (SQLException e){
-            e.printStackTrace();
+        initializeGlobalVariables();
+        LinkedBlockingQueue<InternalEvent> queue = new LinkedBlockingQueue<>();
+        DatabaseAccessObject<InternalEvent> internalEventDatabaseAccessObject;
+        CalendarThread calendarThread = null;
+        if(settings.isgCalMode()){
+            try {
+                internalEventDatabaseAccessObject = new DatabaseAccessObjectFactory(connectionSource).getDAO(InternalEvent.class);
+                calendarThread = new CalendarThread(queue, internalEventDatabaseAccessObject);
+                calendarThread.start();
+                //EventPresenter eventPresenter = new EventPresenter(connectionSource);
+                //eventPresenter.testEventPresenter();
+            } catch (FactoryUnableToCreateDaoException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                queue.put(new InternalEvent("Dodawanie obiektów",
+                        "Prosty test dodawania obiektów",
+                        new DateTime().plusDays(1),
+                        new DateTime().plusDays(1).plusHours(2),
+                        new DateTime()));
+
+                queue.put(new InternalEvent("Inne dodawanie obiektów",
+                        "Prosty test dodawania obiektów",
+                        new DateTime().plusDays(2),
+                        new DateTime().plusDays(2).plusHours(2),
+                        new DateTime().plusDays(1)));
+
+                queue.put(new InternalEvent(true));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(settings.isDeleteEventsFromGoogle()){
+                GoogleCalendarHelper googleCalendarHelper = new GoogleCalendarHelper();
+                googleCalendarHelper.getEvents();
+                googleCalendarHelper.deleteAllEvents();
+            }
         }
 
         final IDatabaseHelper databaseHelper = new DatabaseHelper(connectionSource);
 
-        DatabaseCreator databaseCreator = new DatabaseCreator(connectionSource);
-        databaseCreator.createDatabase();
-        databaseCreator.printLogUsingGenerics();
-        //databaseTestingMethod(databaseHelper);
+        if(settings.isDatabaseMode()) {
+            //Wyłącza logowanie z ORMLite DEBUG/ERROR
+            System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+
+            DatabaseCreator databaseCreator = new DatabaseCreator(connectionSource);
+            databaseCreator.createDatabase();
+            databaseCreator.printLogUsingGenerics();
+            //databaseTestingMethod(databaseHelper);
+        }
         //Nie wiem czemu uruchamiają przez to EventQueue, trzeba będize rozkminić co to za czort :D
-        if(GUI_MODE) {
+        if(settings.isGuiMode()) {
             EventQueue.invokeLater(new Runnable() {
 
                 @Override
                 public void run() {
-                	
-                	
-                	
                     SimpleGIUMainView simpleGUIMain = new SimpleGIUMainView();
                     simpleGUIMain.setApiaryPresenter(new ApiaryPresenter(connectionSource));
+
                     simpleGUIMain.display();
                 }
             });
@@ -64,39 +113,35 @@ public class Main {
                 databaseHelper.closeConnection();
             }
         });
-   // }
+    }
 
-  //  public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
- //       DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+    private static void initializeGlobalVariables(){
+        settings = new Settings();
 
- //       DatabaseAccessObject<Queen> queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
- //       DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
-  //      DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
-  //      DecoratedBeehiveDAO decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
-  //      DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        try{
+            connectionSource = new JdbcPooledConnectionSource(new Settings().getDatabaseUrl());
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
-        //Testowanie zapytań do bazy danych
-  //      System.out.println("-------AFTER-ADDING-NEW-APIARY---------");
-   //     apiaryDao.create(new Apiary("Testowa pasieka", 10, 10));
+    }
 
-   //     for(Apiary a : apiaryDao.getAll()){
-   //         System.out.println(a);
-   //     }
-
-  //      System.out.println("--------BEFORE-UPDATING-BEEHIVE---------");
-  //     for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
-  //         System.out.println(beehive);
-  //      }
-
-  //      Beehive beehive1 = decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0)).get(0);
-  //      beehive1.setInStorage(true);
-   //     beehiveDao.update(beehive1);
-
-    //    System.out.println("--------AFTER-UPDATING-BEEHIVE---------");
-
-    //    for (Beehive beehive : decoratedBeehiveDAO.getBeehivesFromApiary(apiaryDao.getAll().get(0))){
-    //        System.out.println(beehive);
-     //   }
+    public static void databaseTestingMethod(IDatabaseHelper databaseHelper){
+        DatabaseAccessObjectFactory databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+        DatabaseAccessObject<Apiary> apiaryDao = null;
+        DatabaseAccessObject<Beehive> beehiveDao = null;
+        DecoratedBeehiveDAO decoratedBeehiveDAO = null;
+        DatabaseAccessObject<Queen> queenDao;
+        DecoratedStorageDAO decoratedStorageDao;
+        try {
+            queenDao = databaseAccessObjectFactory.getDAO(Queen.class);
+            apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+            beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+            decoratedBeehiveDAO = new DecoratedBeehiveDAO(beehiveDao);
+            decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        } catch (FactoryUnableToCreateDaoException e) {
+            e.printStackTrace();
+        }
 
     }
 }

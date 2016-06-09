@@ -97,6 +97,7 @@ public void display(Apiary apiaryName){
 			  			
 			  			ApiaryMenu apiaryMenu = new ApiaryMenu();
 						apiaryMenu.setBeehivePresenter(new BeehivePresenter(beehivePresenter.getConnectionSource()));
+						apiaryMenu.setApiaryPresenter(new ApiaryPresenter(beehivePresenter.getConnectionSource()));
 						apiaryMenu.display(apiaryName);
 						
 						break;
@@ -107,6 +108,7 @@ public void display(Apiary apiaryName){
 																								
 			  			BeehiveOptions beehiveOptions = new BeehiveOptions();
 						beehiveOptions.setBeehivePresenter(new BeehivePresenter(beehivePresenter.getConnectionSource()));
+						beehiveOptions.setApiaryPresenter(new ApiaryPresenter(beehivePresenter.getConnectionSource()));
 						beehiveOptions.display(beehiveForMenu.getDatabaseId());
 						break;
 						

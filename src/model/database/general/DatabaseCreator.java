@@ -1,6 +1,7 @@
 package model.database.general;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import general.Settings;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -19,14 +20,15 @@ import java.util.Random;
  * Created by atticus on 4/30/16.
  */
 public class DatabaseCreator {
-    private final static boolean DATABASE_LOGGIGNG_ENABLED = true;
-    private final static boolean ALWAYS_CLEAR_DATABASE = true;
+
     private DatabaseAccessObjectFactory databaseAccessObjectFactory;
     private JdbcPooledConnectionSource connectionSource;
+    private Settings settings;
 
     public DatabaseCreator(JdbcPooledConnectionSource connectionSource){
         this.connectionSource = connectionSource;
         this.databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
+        this.settings = new Settings();
     }
 
     public void createDatabase(){
@@ -47,7 +49,7 @@ public class DatabaseCreator {
                             "----------------------------------------------------- \n"
                         );
                 e.printStackTrace();
-                if (DATABASE_LOGGIGNG_ENABLED) System.out.println("Creating tables");
+                if (settings.isDatabaseLoggingEnabled()) System.out.println("Creating tables");
 
                 databaseHelper.createTables();
                 databaseHelper.createDatabaseVersion(new DatabaseVersion(0, 0));
@@ -63,7 +65,7 @@ public class DatabaseCreator {
                 databaseVersionHasChanged = true;
             }
 
-            if (ALWAYS_CLEAR_DATABASE || databaseVersionHasChanged) fillDatabaseWithExampleDataUsingGenerics();
+            if (settings.isAlwaysClearDatabase()|| databaseVersionHasChanged) fillDatabaseWithExampleDataUsingGenerics();
 
             }catch(Exception e){
             e.printStackTrace();
@@ -79,7 +81,7 @@ public class DatabaseCreator {
             DatabaseAccessObject<Apiary> apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
             DatabaseAccessObject<Beehive> beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
             DecoratedStorageDAO decoratedStorageDAO = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
-            if (DATABASE_LOGGIGNG_ENABLED) System.out.println("----CREATING-SAMPLE-OBJECTS------");
+            if (settings.isDatabaseLoggingEnabled()) System.out.println("----CREATING-SAMPLE-OBJECTS------");
             Random generator = new Random();
 
             //Najpierw trzeba wyczyścić tabele

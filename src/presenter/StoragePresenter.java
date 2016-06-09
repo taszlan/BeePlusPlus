@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -26,7 +27,11 @@ public class StoragePresenter {
 
     public StoragePresenter(JdbcPooledConnectionSource connectionSource){
         databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-        decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        try {
+            decoratedStorageDao = new DecoratedStorageDAO(databaseAccessObjectFactory.getDAO(Storage.class));
+        } catch (FactoryUnableToCreateDaoException e) {
+            e.printStackTrace();
+        }
         this.connectionSource = connectionSource;
     }
 

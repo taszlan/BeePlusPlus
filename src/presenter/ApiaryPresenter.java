@@ -1,6 +1,7 @@
 package presenter;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -29,12 +30,13 @@ public class ApiaryPresenter {
 	    
 	    public ApiaryPresenter(JdbcPooledConnectionSource connectionSource){
 	            databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-	            apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
-	            
-	            
-	           
-	            
-	            this.connectionSource = connectionSource;
+			try {
+				apiaryDao = databaseAccessObjectFactory.getDAO(Apiary.class);
+			} catch (FactoryUnableToCreateDaoException e) {
+				e.printStackTrace();
+			}
+
+			this.connectionSource = connectionSource;
 	        }
 	    
 	    public List<Apiary> getApiaryList(){

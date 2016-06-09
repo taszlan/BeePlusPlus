@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 
+import general.exceptions.FactoryUnableToCreateDaoException;
 import model.Apiary;
 import model.Beehive;
 import model.Queen;
@@ -27,10 +28,14 @@ public class BeehivePresenter {
 
     public BeehivePresenter(JdbcPooledConnectionSource connectionSource){
     	   databaseAccessObjectFactory = new DatabaseAccessObjectFactory(connectionSource);
-           
-           beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
-           
-           decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
+
+        try {
+            beehiveDao = databaseAccessObjectFactory.getDAO(Beehive.class);
+        } catch (FactoryUnableToCreateDaoException e) {
+            e.printStackTrace();
+        }
+
+        decoratedBeehiveDao = new DecoratedBeehiveDAO(beehiveDao);
            
            this.connectionSource = connectionSource;
     }
